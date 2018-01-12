@@ -14,7 +14,7 @@
 * `npm run dev` 启动开发模式
 * 代码提交远程到**develop**分支，而不是**master**
 * 提交前请保证代码不会出现`eslint`报错
-* 项目结构和命令请查看[文档](https://github.com/easy-mock/easy-mock/blob/dev/README.zh-CN.md)
+* 具体详细项目文档请查看[文档](https://github.com/easy-mock/easy-mock/blob/dev/README.zh-CN.md)
 
 ### 配置文件
 
