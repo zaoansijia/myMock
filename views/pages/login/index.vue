@@ -31,7 +31,7 @@
           ref="wallpaper"
           v-show="wallpaperVisible"></div>
       </transition>
-      <div class="links">
+      <!-- <div class="links">
         <router-link to="/docs" class="link">Document</router-link>
         <a href="https://github.com/easy-mock/easy-mock-cli" target="_blank" class="link">CLI</a>
         <a href="https://github.com/easy-mock/easy-mock" target="_blank" class="link">GitHub</a>
@@ -60,10 +60,10 @@
           </div>
         </div>
       </transition>
-      <div class="about-btn" @click="page = 1">{{$tc('p.login.about', 1)}}</div>
+      <div class="about-btn" @click="page = 1">{{$tc('p.login.about', 1)}}</div> -->
     </div>
 
-    <div class="em-index__section section-about" style="z-index: 5"
+    <!-- <div class="em-index__section section-about" style="z-index: 5"
       :class="{'is-old': page > 1}">
       <em-shape-shifter v-if="page === 1"></em-shape-shifter>
       <div class="feature-list">
@@ -152,12 +152,12 @@
           </i-col>
         </Row>
       </div>
-    </div>
+    </div> -->
 
-    <div class="em-index__pagination">
+    <!-- <div class="em-index__pagination">
       <div class="dot" :class="{'active': page === 0}" @click="page = 0"></div>
       <div class="dot" :class="{'active': page === 1}" @click="page = 1"></div>
-    </div>
+    </div> -->
   </div>
 </template>
 

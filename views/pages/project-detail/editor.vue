@@ -188,7 +188,7 @@ export default {
             this.value.method = this.temp.method
             this.value.description = this.temp.description
             this.value.parameters = this.temp.parameters
-            if (this.autoClose) this.close()
+            // if (this.autoClose) this.close()
           }
         })
       } else {

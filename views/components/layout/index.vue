@@ -83,6 +83,11 @@
               @click="open('http://itpm.gome.inc/secure/Dashboard.jspa')">
               <Icon type="link"></Icon> {{$t('c.layout.menu[4][5]')}}
             </li>
+            <li
+              class="ivu-menu-item"
+              @click="open('http://gitlab.gome.inc/')">
+              <Icon type="link"></Icon> {{$t('c.layout.menu[4][6]')}}
+            </li>
           </Submenu>
           <Submenu name="5" class="nav-avatar" v-show="userHeadImg">
             <template slot="title">
