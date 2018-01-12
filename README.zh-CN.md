@@ -1,4 +1,4 @@
-# 简介
+## 简介
 
 内部试用mock数据，基于大搜车的[easy-mock](https://github.com/easy-mock/easy-mock)
 
@@ -7,7 +7,7 @@
 > 在开始之前，假设你已经成功安装了 [Node.js](https://nodejs.org)（**v7.4** 以上）和 [MongoDB](https://www.mongodb.com)（**v3.4** 以上）。
 
 
-# 使用和说明
+## 使用和说明
 
 * 默认使用**vscode**作为开发工具，统一插件和配置
 * `yarn install`或者`yarn` 安装所有依赖，如果没有yarn，请先安装 `npm install -g yarn`
