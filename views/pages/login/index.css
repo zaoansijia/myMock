@@ -1,5 +1,9 @@
 @import '../../styles/base/var.css';
-
+.em-index__login {
+  .title {
+    font-size:44px;
+  }
+}
 @c index {
   color: #fff;
 

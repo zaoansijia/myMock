@@ -44,7 +44,7 @@
         <div class="em-proj-detail__switcher">
           <ul>
             <li class="proj-search">
-              <i-input v-model="keywords" placeholder="Search Easy Mock"></i-input>
+              <i-input v-model="keywords" placeholder="Search Mock"></i-input>
             </li>
             <li @click="openEditor()" v-shortkey="['ctrl', 'n']" @shortkey="openEditor()">
               <Icon type="plus-round"></Icon> {{$t('p.detail.create.action')}}

@@ -1,6 +1,6 @@
-# Easy Mock
-Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久化服务。
-忘掉下面这些实用但麻烦的 Mock 方式吧。在你用了 Easy Mock 之后，你肯定会爱不释手的。另外，如果使用时让你不快乐，那么请一定要记得 [反馈](#fan-kui)。
+# Gome Mock
+Gome Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久化服务。
+忘掉下面这些实用但麻烦的 Mock 方式吧。在你用了 Gome Mock 之后，你肯定会爱不释手的。另外，如果使用时有问题，那么请 [反馈](#fan-kui) IM前端组。
 
 **常见的 Mock 方式：**
 - 将模拟数据直接写在代码里
@@ -11,12 +11,12 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 ### 演示项目
 > 每个接口旁都有一个小箭头，点击之后会展开并显示该接口的详细信息。
 
-所有 **新注册** 的用户都会为其创建一个演示项目，如下图所示。这个项目中已经创建了大部分场景下的演示接口，点击接口旁的 **预览按钮** 即可。如果你已经掌握了 Easy Mock 的使用，可以将其删除。
+所有 **新注册** 的用户都会为其创建一个演示项目，如下图所示。这个项目中已经创建了大部分场景下的演示接口，点击接口旁的 **预览按钮** 即可。如果你已经掌握了 Gome Mock 的使用，可以将其删除。
 
 ![演示项目](./images/demo.png)
 
 ### 基础语法
-> Easy Mock 引入了 [Mock.js](http://mockjs.com)，下面只提供部分语法展示。更详尽的用例及文档请参考 Mock.js 官网。
+> Gome Mock 引入了 [Mock.js](http://mockjs.com)，下面只提供部分语法展示。更详尽的用例及文档请参考 Mock.js 官网。
 > - 支持生成随机的文本、数字、布尔值、日期、邮箱、链接、图片、颜色等
 > - 支持扩展更多数据类型，支持自定义函数和正则
 
@@ -154,7 +154,7 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 
 ## 进阶指南
 
-如果你已经掌握了上面基础部分，那么进阶指南将会使你把 Easy Mock 用到极致。
+如果你已经掌握了上面基础部分，那么进阶指南将会使你把 Gome Mock 用到极致。
 
 ### 善用工作台
 
@@ -163,7 +163,7 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 ### Swagger
 > 如果你还不知道 [Swagger](http://swagger.io) 是什么？
 
-效率一直我们关注的问题。Easy Mock 支持基于 Swagger 创建项目，以节省手动创建接口的时间。Swagger 文档更新也能通过更新操作重新生成接口，并且这是智能的，只会对修改过的接口进行更新。
+效率一直我们关注的问题。Gome Mock 支持基于 Swagger 创建项目，以节省手动创建接口的时间。Swagger 文档更新也能通过更新操作重新生成接口，并且这是智能的，只会对修改过的接口进行更新。
 
 **基于 Swagger 创建的项目，会有以下几种能力。**
 
@@ -217,7 +217,7 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 
 ### API 自动生成
 
-如果你想进一步提高自己的效率，现在可以通过 [Easy Mock CLI](https://github.com/easy-mock/easy-mock-cli) 自动创建诸如 `api.js` 这样的文件了。
+如果你想进一步提高自己的效率，现在可以通过 [Gome Mock CLI](https://github.com/easy-mock/easy-mock-cli) 自动创建诸如 `api.js` 这样的文件了。
 
 ### 响应式数据
 > 虽然无法做到数据联动，但是借助于 **响应式数据**，也能玩出许多新花样。
@@ -353,7 +353,7 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 步骤：
 
 - 利用 Charles Fiddler 等代理工具，抓取客户端中包含页面入口的接口
-- 在 Easy Mock 上创建一个接口
+- 在 Gome Mock 上创建一个接口
 - 将刚刚抓取的接口数据复制到 `数据编辑器` 中，修改页面入口为本地的入口然后保存。要用本地 `ip` 哦，`localhost` 在手机上是无效的
 - 复制接口地址
 - 回到代理工具，点击最开始抓取的接口，将其代理成刚刚复制的地址即可
@@ -368,7 +368,7 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 
 ### JSONP
 
-为了满足更多的使用场景，Easy Mock 支持 JSONP。不管是什么接口，只需要在请求中加入 **jsonp_param_name** 参数即可。
+为了满足更多的使用场景，Gome Mock 支持 JSONP。不管是什么接口，只需要在请求中加入 **jsonp_param_name** 参数即可。
 一般情况下，`JSONP` 的参数名多为 `callback`。但为了满足更多情况，我们通过 **jsonp_param_name** 参数去指定这个参数名。
 
 ```js
@@ -381,7 +381,7 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 项目中的成员，皆能 `邀请` 或 `移除` 成员。作为被邀请者如果想移除项目，可在编辑项目时将自己移除，保存即可。另外，只有创建者才能删除项目哦！
 
 ### 团队项目
-> 为了满足更多场景，Easy Mock 支持团队项目。
+> 为了满足更多场景，Gome Mock 支持团队项目。
 
 - **所有用户** 都可以创建、加入团队，并且 **没有条件限制**
 - **所有用户** 都可以在团队下创建、修改项目，但无法删除项目 **只有创建者能删除**
@@ -390,7 +390,7 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 
 ### Restful
 
-如果后端提供 `/restful/:id/list` 这样或者这样 `/restful/{id}/list` 的接口地址。别慌，Easy Mock 是支持的。
+如果后端提供 `/restful/:id/list` 这样或者这样 `/restful/{id}/list` 的接口地址。别慌，Gome Mock 是支持的。
 
 ## 常见问题
 ### 忘记密码
@@ -421,17 +421,17 @@ Easy Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 
 ### 没有 Swagger 文档
 
-Easy Mock 并没有强制要求使用 Swagger，所以即使没有 Swagger 我们也能愉快的使用 Easy Mock。如果你真的很想体验用 Swagger 创建项目，那么可以到 [Swagger Editor](http://editor.swagger.io) 上写接口文档，然后生成 JSON，再使用 **内网 Swagger 文档** 的解决方案即可。
+Gome Mock 并没有强制要求使用 Swagger，所以即使没有 Swagger 我们也能愉快的使用 Gome Mock。如果你真的很想体验用 Swagger 创建项目，那么可以到 [Swagger Editor](http://editor.swagger.io) 上写接口文档，然后生成 JSON，再使用 **内网 Swagger 文档** 的解决方案即可。
 
 ### 内网 Swagger 文档
 
-如果 Swagger 文档只能内网访问，那么外网 Easy Mock 将无法为其创建项目。
+如果 Swagger 文档只能内网访问，那么外网 Gome Mock 将无法为其创建项目。
 
 **解决方案**
 > 不适用于 OAS 1.2
 
 - 复制文档接口的 JSON 数据，以 [Petstore](http://petstore.swagger.io/v2/swagger.json) 为例
-- 在 Easy Mock 中新建一个接口，`数据编辑器` 中粘贴刚刚复制的接口数据（可能有点大）并完成创建
+- 在 Gome Mock 中新建一个接口，`数据编辑器` 中粘贴刚刚复制的接口数据（可能有点大）并完成创建
 - 复制刚刚创建的接口的 URL
 - 创建一个新的项目，`Swagger Docs API` 文本框填写刚刚复制的 URL
 - 填写完其它内容点击创建即可
@@ -439,6 +439,9 @@ Easy Mock 并没有强制要求使用 Swagger，所以即使没有 Swagger 我�
 ## 其它
 ### 反馈
 
-扫描以下二维码，有任何问题可以在群内反馈。
-
-![Easy Mock 反馈群](./images/qq-qun.jpg) {.qq-qun}
+请联系IM 前端组
+linfangshu1@gome.com.cn
+yangliu15@gome.com.cn
+fandan2@gome.com.cn
+songyingxia@gome.com.cn
+longyu2@gome.com

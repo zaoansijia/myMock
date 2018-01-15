@@ -2,7 +2,8 @@
   <div class="em-index">
     <transition name="zoom">
       <div class="em-index__login" v-if="page === 0">
-        <img src="/public/images/easy-mock.png">
+        <img src="/public/images/gome-mock.png">
+        <!-- <p class='title'>Gome Mock</p> -->
         <p>{{$tc('p.login.description', 1)}}</p>
         <p>{{$tc('p.login.description', 2)}}</p>
         <transition name="fadeUp" mode="out-in">
