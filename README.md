@@ -1,6 +1,6 @@
 ## 简介
 
-内部试用mock数据，基于大搜车的[easy-mock](https://github.com/easy-mock/easy-mock)
+内部调用mock数据
 
 ## 快速开始
 
@@ -14,7 +14,7 @@
 * `npm run dev` 启动开发模式
 * 代码目前只有**master**分支,提交远程到**master**分支，如果开发新功能，请pull新分支开发,功能成熟再合并
 * 提交前请保证代码不会出现`eslint`报错
-* 具体详细项目文档请查看[文档](https://github.com/easy-mock/easy-mock/blob/dev/README.zh-CN.md)
+* 项目结构和命令请查看[文档](http://gitlab.gome.inc/yangliu/easy-mock)
 
 ### 配置文件
 
