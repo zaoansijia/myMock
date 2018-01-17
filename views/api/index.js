@@ -149,6 +149,10 @@ const project = {
   updateWorkbench: config => createAPI('/project/update_workbench', 'post', config),
   delete: config => createAPI('/project/delete', 'post', config)
 }
+const serverUrl = {
+  createUrl: config => createAPI('/server_url/createUrl', 'post', config),
+  getList: config => createAPI('/server_url/list', 'get', config)
+}
 
 const mock = {
   getList: config => createAPI('/mock', 'get', config),
@@ -178,5 +182,6 @@ export {
   util,
   group,
   realtime,
-  initAPI
+  initAPI,
+  serverUrl
 }

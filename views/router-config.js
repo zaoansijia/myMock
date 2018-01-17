@@ -60,6 +60,10 @@ export function createRouter () {
           {
             path: 'project/:id',
             component: getComponent('project-detail')
+          },
+          {
+            path: 'serverUrl',
+            component: getComponent('serverUrl')
           }
         ]
       }

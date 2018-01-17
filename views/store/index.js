@@ -9,6 +9,7 @@ import group from './modules/group'
 import project from './modules/project'
 import dashboard from './modules/dashboard'
 import wallpaper from './modules/wallpaper'
+import serverurl from './modules/serverurl'
 
 Vue.use(Vuex)
 
@@ -82,6 +83,14 @@ export function createStore () {
           url: ''
         },
         ...wallpaper
+      },
+      serverurl: {
+        state: {
+          list: [],
+          keywords: '',
+          pageIndex: 1
+        },
+        ...serverurl
       }
     }
   })

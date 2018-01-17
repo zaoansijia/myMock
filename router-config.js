@@ -10,6 +10,7 @@ const util = require('./controllers/util')
 const group = require('./controllers/group')
 const project = require('./controllers/project')
 const realtime = require('./controllers/realtime')
+const serverUrl = require('./controllers/server_url')
 
 const routerPrefix = config.get('routerPrefix')
 
@@ -50,3 +51,6 @@ exports.api = router({ prefix: routerPrefix.api })
   .post('/mock/update', mock.update)
   .post('/mock/delete', mock.delete)
   .post('/mock/export', mock.exportMock)
+
+  .post('/server_url/createUrl', serverUrl.createUrl)
+  .get('/server_url/list', serverUrl.list)

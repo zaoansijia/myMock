@@ -37,6 +37,11 @@
             @click.native="$router.push('/workbench')">
             <Icon type="code-working"></Icon> {{$t('c.layout.menu[1]')}}
           </Menu-item>
+                    <Menu-item
+            name="/serverUrl"
+            @click.native="$router.push('/serverUrl')">
+            <Icon type="code-working"></Icon> 地址
+          </Menu-item>
           <!-- <Menu-item
             name="/dashboard"
             @click.native="$router.push('/dashboard')">
