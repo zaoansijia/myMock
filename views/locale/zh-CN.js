@@ -204,7 +204,22 @@ export default {
       nav: ['地址列表', '新增/编辑'],
       title: ['服务器地址', '后台人员的服务器地址，如果有更改请及时更新'],
       column: ['姓名', '地址', '操作'],
-      action: ['编辑', '删除']
+      // action: ['编辑', '删除'],
+      // operate: ['添加成功', '编辑成功'],
+      add: {
+        success: '添加成功',
+        btnTxt: '添加地址'
+      },
+      edit: {
+        success: '编辑成功',
+        btnTxt: '编辑地址',
+        action: '编辑'
+      },
+      remove: {
+        action: '删除',
+        confirm: '该操作无法撤消，是否继续删除?',
+        success: '删除成功'
+      }
     }
   },
   c: {

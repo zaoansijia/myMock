@@ -10,6 +10,5 @@ const schema = new Schema({
   url: String
 })
 
-schema.index({ name: 1 }, { unique: true })
-
+schema.index({ name: 1, url: 1 }, { unique: true })
 module.exports = mongoose.model('ServerUrl', schema)

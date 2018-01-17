@@ -51,28 +51,58 @@ exports.list = function * () {
 }
 
 exports.update = function * () {
-  const password = this.checkBody('password').empty().len(6, 20).value
-  const nickName = this.checkBody('nick_name').empty().len(2, 20).value
-  const headImg = this.checkBody('head_img').empty().value
+  const id = this.checkBody('id').notEmpty().value
+  const name = this.checkBody('name').notEmpty().value
+  const url = this.checkBody('url').notEmpty().value
 
   if (this.errors) {
     this.body = this.util.refail(null, 10001, this.errors)
     return
   }
 
-  const user = yield serverProxy.getById(this.state.user.id)
+  // 获取该服务器地址
+  const sUrl = yield serverProxy.getById(id)
 
-  // 修改资料
-  user.nick_name = nickName || user.nick_name
-  user.head_img = headImg || user.head_img
-  user.password = password ? yield util.bhash(password) : user.password
+  if (!sUrl) {
+    this.body = this.util.refail('更新失败，此服务器 不存在')
+    return
+  }
 
-  yield serverProxy.update(user)
+  // 更新属性
+  sUrl.url = url || sUrl.url
+  sUrl.name = name || sUrl.name
+
+  // 更新属性后查重
+  const existQuery = {
+    _id: { $ne: id },
+    $or: [{
+      url: sUrl.url
+    }, {
+      name: sUrl.name
+    }]
+  }
+  // 查重
+  const existURL = yield serverProxy.findOne(existQuery)
+
+  // const existURL = yield serverProxy.findOne({
+  //   name: name
+  // })
+  // console.log(existURL,'url')
+  if (existURL) {
+    if (existURL.name === name) {
+      this.body = this.util.refail('更新失败，已有该服务器名')
+    } else {
+      this.body = this.util.refail('更新失败，已有该服务器地址')
+    }
+    return
+  }
+
+  yield serverProxy.updateById(sUrl)
 
   this.body = this.util.resuccess()
 }
 
-exports.createUrl = function * () {
+exports.add = function * () {
   const name = this.checkBody('name').notEmpty().len(1, 20).value
   const url = this.checkBody('url').notEmpty().len(6, 20).value
 
@@ -80,11 +110,21 @@ exports.createUrl = function * () {
     this.body = this.util.refail(null, 10001, this.errors)
     return
   }
-
-  let user = yield serverProxy.getByName(name)
-
-  if (!_.isEmpty(user)) {
-    this.body = this.util.refail('注册失败，该用户已存在')
+  // 更新属性后查重
+  const existQuery = {
+    $or: [{
+      url: url
+    }, {
+      name: name
+    }]
+  }
+  let user = yield serverProxy.findOne(existQuery)
+  if (user) {
+    if (user.name === name) {
+      this.body = this.util.refail('新增失败，已有该服务器名')
+    } else {
+      this.body = this.util.refail('新增失败，已有该服务器地址')
+    }
     return
   }
 
@@ -92,10 +132,17 @@ exports.createUrl = function * () {
     name,
     url
   )
+  this.body = this.util.resuccess()
+}
+exports.delete = function * () {
+  const id = this.checkBody('id').notEmpty().value
 
-  //   user = yield serverProxy.getByName(name)
+  if (this.errors) {
+    this.body = this.util.refail(null, 10001, this.errors)
+    return
+  }
 
-  //   yield mock.createExample(user.id)
+  yield serverProxy.delById(id)
 
   this.body = this.util.resuccess()
 }

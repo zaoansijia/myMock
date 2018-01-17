@@ -2,7 +2,7 @@
   <div class="em-index">
     <em-header
       icon="cube"
-      :title="$t('p.server.title[0]')"
+      :title="pageName"
       :description="$t('p.server.title[1]')"
       :nav="nav"
       v-model="pageName">
@@ -16,7 +16,8 @@
       <i-input size="large"
         :placeholder="$tc('p.login.form.placeholder', 1)"
         v-model="form.url" ></i-input>
-        <Button type="error" long @click="add" >新增地址</Button>
+        <Button type="error" long @click="add" v-if="type==='add'"> {{$t('p.server.add.btnTxt')}} </Button>
+        <Button type="error" long @click="edit" v-if="type==='edit'"> {{$t('p.server.edit.btnTxt')}} </Button>
     </Form>
     <div
         class="em-container"
@@ -46,6 +47,7 @@ export default {
   name: 'addServer',
   data () {
     return {
+      type: 'add',
       pageName: this.$t('p.server.nav[0]'),
       nav: [
         { title: this.$t('p.server.nav[0]'), icon: 'android-list' },
@@ -68,8 +70,8 @@ export default {
             return (
               <div>
                 <Button-group>
-                  <i-button size="small" title={this.$t('p.server.action[0]')} ><icon type="edit"></icon></i-button>
-                  <i-button size="small" title={this.$t('p.server.action[1]')} ><icon type="trash-b"></icon></i-button>
+                  <i-button size="small" title={this.$t('p.server.edit.action')} onClick={this.editRow.bind(this, params.row)}><icon type="edit"></icon></i-button>
+                  <i-button size="small" title={this.$t('p.server.remove.action')} onClick={this.delete.bind(this, params.row._id)}><icon type="trash-b"></icon></i-button>
                 </Button-group>
               </div>
             )
@@ -81,6 +83,15 @@ export default {
   asyncData ({ store, route }) {
     store.commit('serverurl/INIT_REQUEST')
     return store.dispatch('serverurl/FETCH', route)
+  },
+  watch: {
+    pageName: function (name) {
+      if (name === this.$t('p.server.nav[0]')) {
+        this.form.name = ''
+        this.form.url = ''
+        this.type = 'add'
+      }
+    }
   },
   mounted () {
     this.$on('query', debounce((keywords) => {
@@ -99,31 +110,55 @@ export default {
     }
   },
   methods: {
-    // onClickOutside () {
-    //   if (!this.name && !this.url) {
-    //     this.isLogin = false
-    //   }
-    // },
     add () {
-      api.serverUrl.createUrl({
+      api.serverUrl.add({
         data: {
           name: this.form.name,
           url: this.form.url
         }
       }).then((res) => {
         if (res.data.success) {
-          // this.$Message.success(this.$t('p.login.confirm.register.success'))
-          // this.login()
-          alert('hello')
+          this.$Message.success(this.$t('p.server.add.success'))
+          this.$store.commit('serverurl/INIT_REQUEST')
+          this.$store.dispatch('serverurl/FETCH', this.$route)
+        }
+      })
+    },
+    edit () {
+      api.serverUrl.update({
+        data: this.form
+      }).then((res) => {
+        if (res.data.success) {
+          this.$Message.success(this.$t('p.server.edit.success'))
+          this.$store.commit('serverurl/INIT_REQUEST')
+          this.$store.dispatch('serverurl/FETCH', this.$route)
+        }
+      })
+    },
+    editRow (row) {
+      this.type = 'edit'
+      this.form.name = row.name
+      this.form.url = row.url
+      this.form.id = row._id
+      this.pageName = this.$t('p.server.nav[1]')
+    },
+    delete (id) {
+      this.$Modal.confirm({
+        title: this.$t('confirm.title'),
+        content: this.$t('p.server.remove.confirm'),
+        onOk: () => {
+          api.serverUrl.delete({
+            data: { id }
+          }).then((res) => {
+            if (res.data.success) {
+              this.$Message.success(this.$t('p.server.remove.success'))
+              this.$store.commit('serverurl/INIT_REQUEST', { pageIndex: 1 })
+              this.$store.dispatch('serverurl/FETCH', this.$route)
+            }
+          })
         }
       })
     }
-    // eidt () {
-    //   console.log('编辑')
-    // },
-    // delete () {
-    //   console.log('删除')
-    // }
   }
 }
 </script>

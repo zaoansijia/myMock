@@ -1,3 +1,4 @@
+
 'use strict'
 // created at 2018/1/15 by yangliu
 
@@ -25,8 +26,8 @@ exports.update = function (serverUrl) {
   })
 }
 
-exports.getByName = function (serverUrlName) {
-  return ServerUrlModel.findOne({ name: serverUrlName })
+exports.findOne = function (query) {
+  return ServerUrlModel.findOne(query)
 }
 
 exports.getById = function (serverUrlId) {
@@ -34,6 +35,19 @@ exports.getById = function (serverUrlId) {
 }
 
 exports.find = function (query, opt) {
-  console.log(query, 'query')
   return ServerUrlModel.find(query, {}, opt)
+}
+
+exports.delById = function (id) {
+  return ServerUrlModel.remove({_id: id})
+}
+exports.updateById = function (mock) {
+  return ServerUrlModel.update({
+    _id: mock.id
+  }, {
+    $set: {
+      url: mock.url,
+      name: mock.name
+    }
+  })
 }

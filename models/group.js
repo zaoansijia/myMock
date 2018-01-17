@@ -19,7 +19,6 @@ const schema = new Schema({
   }
 })
 
-schema.index({ user: 1, create_at: -1 })
 schema.index({ name: 1 }, { unique: true })
 
 module.exports = mongoose.model('Group', schema)

@@ -52,5 +52,7 @@ exports.api = router({ prefix: routerPrefix.api })
   .post('/mock/delete', mock.delete)
   .post('/mock/export', mock.exportMock)
 
-  .post('/server_url/createUrl', serverUrl.createUrl)
+  .post('/server_url/add', serverUrl.add)
   .get('/server_url/list', serverUrl.list)
+  .post('/server_url/delete', serverUrl.delete)
+  .post('/server_url/update', serverUrl.update)

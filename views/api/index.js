@@ -150,8 +150,10 @@ const project = {
   delete: config => createAPI('/project/delete', 'post', config)
 }
 const serverUrl = {
-  createUrl: config => createAPI('/server_url/createUrl', 'post', config),
-  getList: config => createAPI('/server_url/list', 'get', config)
+  add: config => createAPI('/server_url/add', 'post', config),
+  update: config => createAPI('/server_url/update', 'post', config),
+  getList: config => createAPI('/server_url/list', 'get', config),
+  delete: config => createAPI('/server_url/delete', 'post', config)
 }
 
 const mock = {
