@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="em-container-url" v-if="pageName === $t('p.server.nav[0]')" key="b">
-          <i-input v-model="keywords" placeholder="Search URL" class='search'></i-input>
+          <i-input v-model="keywords" placeholder="Search URL / Name" class='search'></i-input>
           <Table
             border
             :columns="columns"
