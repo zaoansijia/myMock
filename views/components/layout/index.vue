@@ -40,7 +40,7 @@
                     <Menu-item
             name="/serverUrl"
             @click.native="$router.push('/serverUrl')">
-            <Icon type="code-working"></Icon> {{$t('c.layout.menu[2]')}}
+            <Icon type="ios-list"></Icon> {{$t('c.layout.menu[2]')}}
           </Menu-item>
           <!-- <Menu-item
             name="/dashboard"
