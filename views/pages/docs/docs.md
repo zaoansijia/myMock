@@ -258,8 +258,8 @@ Gome Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 | _req.method | 获取请求方法 |
 | _req.params | 获取 url 参数对象|
 | _req.querystring | 获取查询参数字符串(url中?后面的部分)，不包含 ? |
-| _req.query | 将查询参数字符串进行解析并以对象的形式返回，如果没有查询参数字字符串则返回一个空对象 |
-| _req.body | 当 post 请求以 `x-www-form-urlencoded` 方式提交时，我们可以拿到请求的参数对象 |
+| _req.query(常用) | 将查询参数字符串进行解析并以对象的形式返回,没有返回空对象（针对get方式请求） |
+| _req.body(常用) | 当 post 方式请求时，我们可以拿到请求的参数对象(针对post请求) |
 | _req.path | 获取请求路径名 |
 | _req.header | 获取请求头对象 |
 | _req.originalUrl | 获取请求原始地址 |
@@ -398,7 +398,7 @@ Gome Mock 是一个可视化，并且能快速生成 **模拟数据** 的持久�
 
 ### 如何本地部署
 
-本地部署的相关介绍，请移步 [GitHub](https://github.com/easy-mock/easy-mock)。
+本地部署的相关介绍，请移步 [Gitlab](http://gitlab.gome.inc/yangliu/gome-mock)。
 
 ### 数据如何联动
 

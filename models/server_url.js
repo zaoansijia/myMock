@@ -1,5 +1,10 @@
+/**
+ * @author yangliu at 2018-1-15
+ *
+ * @desc 服务器地址接口model定义
+ *
+ */
 'use strict'
-// created at 2018/1/15 by yangliu
 
 const mongoose = require('mongoose')
 

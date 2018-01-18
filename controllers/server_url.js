@@ -1,11 +1,14 @@
+/**
+ * @author yangliu at 2018-1-15
+ *
+ * @desc 服务器地址接口控制器
+ *
+ */
 'use strict'
-
 const _ = require('lodash')
 const config = require('config')
 
 const p = require('../proxy')
-const util = require('../util')
-// const mock = require('../util/mock')
 const ft = require('../models/fields_table')
 
 const serverProxy = p.ServerUrl
@@ -104,7 +107,7 @@ exports.update = function * () {
 
 exports.add = function * () {
   const name = this.checkBody('name').notEmpty().len(1, 20).value
-  const url = this.checkBody('url').notEmpty().len(6, 20).value
+  const url = this.checkBody('url').notEmpty().len(6, 40).value
 
   if (this.errors) {
     this.body = this.util.refail(null, 10001, this.errors)

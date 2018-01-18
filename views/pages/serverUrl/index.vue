@@ -1,5 +1,12 @@
+
+/**
+ * @author yangliu at 2018-1-15
+ *
+ * @desc 服务器地址
+ *
+ */
 <template>
-  <div class="em-index">
+  <div class="em-server-wrapper">
     <em-header
       icon="cube"
       :title="pageName"
@@ -7,28 +14,40 @@
       :nav="nav"
       v-model="pageName">
     </em-header>
-    <Form v-if="pageName === $t('p.server.nav[1]')" label-position="top" :model="form" ref="formValidate">
-        <Form-item :label="$tc('p.new.form.description', 1)"  class="em-new__form-hr">
-      <i-input size="large"
-        :placeholder="$tc('p.login.form.placeholder', 1)"
-        ref="name" v-model="form.name" ></i-input>
-        </Form-item>
-      <i-input size="large"
-        :placeholder="$tc('p.login.form.placeholder', 1)"
-        v-model="form.url" ></i-input>
-        <Button type="error" long @click="add" v-if="type==='add'"> {{$t('p.server.add.btnTxt')}} </Button>
-        <Button type="error" long @click="edit" v-if="type==='edit'"> {{$t('p.server.edit.btnTxt')}} </Button>
-    </Form>
-    <div
-        class="em-container"
-        v-if="pageName === $t('p.server.nav[0]')"
-        key="b">
-        <Table
-          border
-          :columns="columns"
-          :data="list"
-          :highlight-row="true"></Table>
-    </div>
+    <Back-top>
+      <em-add icon="arrow-up-c" :bottom="90"></em-add>
+    </Back-top>
+    <transition name="fade" mode="out-in">
+      <div class="em-container-form" v-if="pageName === $t('p.server.nav[1]')" key="a">
+        <div class="em-server-content">
+          <Form :model="form" ref="formValidate">
+              <Form-item :label="$tc('p.server.form.name[0]', 1)"  class="em-new__form-hr">
+                <i-input size="large"
+                  :placeholder="$tc('p.server.form.name[1]', 1)"
+                  ref="name" v-model="form.name" ></i-input>
+                  <p class='desc'>{{$t('p.server.form.name[2]')}}</p>
+              </Form-item>
+              <Form-item :label="$tc('p.server.form.url[0]', 1)"  class="em-new__form-hr">
+                <i-input size="large"
+                  :placeholder="$tc('p.server.form.url[1]', 1)"
+                  v-model="form.url" ></i-input>
+                <p class='desc'>{{$t('p.server.form.url[2]')}}</p>
+              </Form-item>
+              <Button type="primary" long @click="add" v-if="type==='add'"> {{$t('p.server.add.btnTxt')}} </Button>
+              <Button type="primary" long @click="edit" v-if="type==='edit'"> {{$t('p.server.edit.btnTxt')}} </Button>
+          </Form>
+        </div>
+      </div>
+      <div class="em-container-url" v-if="pageName === $t('p.server.nav[0]')" key="b">
+          <i-input v-model="keywords" placeholder="Search URL" class='search'></i-input>
+          <Table
+            border
+            :columns="columns"
+            :data="list"
+            :highlight-row="true">
+          </Table>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -37,14 +56,12 @@
 </style>
 
 <script>
-// import config from 'config'
-// import cookie from 'react-cookie'
+
 import * as api from '../../api'
 import debounce from 'lodash/debounce'
-// let resizeTimer
 
 export default {
-  name: 'addServer',
+  name: 'serverurl',
   data () {
     return {
       type: 'add',

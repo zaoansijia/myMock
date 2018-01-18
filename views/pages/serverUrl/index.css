@@ -1,0 +1,42 @@
+.em-server-wrapper {
+    .em-container-form {
+        padding: 0 20px;
+        max-width: 1020px;
+        margin: auto;
+        .em-server-content {
+            padding: 66px 220px 100px;
+            margin-top: 20px;
+            width: 100%;
+            background: #fff;
+            -webkit-box-shadow: 0 2px 3px #eee;
+            box-shadow: 0 2px 3px #eee;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            button {
+                margin-top:20px;
+            }
+            .em-new__form-hr {
+                border:none;
+                padding-bottom: 0;
+            }
+        }
+    }
+    .em-container-url {
+        padding: 0 20px;
+        max-width: 1020px;
+        margin: auto;
+        margin-top:20px;
+        .ivu-table-body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 500px;
+        }
+        .search {
+            width:420px;
+            margin-bottom: 20px;
+        }
+    }
+    .desc {
+        color:gray;
+    }
+}

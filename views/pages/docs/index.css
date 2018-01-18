@@ -49,7 +49,7 @@
   .markdown-body h2:target,
   .markdown-body h3:target,
   .markdown-body h4:target {
-    /* padding-top: 152px; */
+    padding-top: 130px;
   }
 
   .is-changelog h1:target,
