@@ -4,7 +4,6 @@ export default {
   namespaced: true,
   mutations: {
     SET_VALUE (state, payload) {
-      console.log(payload, 'pay')
       state.list = state.pageIndex === 1
         ? payload
         : state.list.concat(payload)
@@ -28,7 +27,6 @@ export default {
           keywords: state.keywords
         }
       }).then((res) => {
-        console.log(res.data, 'dta')
         if (res.data.success) {
           commit('SET_VALUE', res.data.data)
           state.pageIndex += 1
