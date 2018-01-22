@@ -24,6 +24,5 @@ desktop.ini
 npm-debug.log
 yarn-debug.log*
 yarn-error.log*
-config
 views/config.json
 public/upload
