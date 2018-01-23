@@ -66,6 +66,8 @@ exports.list = function * () {
     }, {
       description: keyExp
     }, {
+      classify: keyExp
+    }, {
       method: keyExp
     }, {
       mode: keyExp
@@ -90,7 +92,6 @@ exports.list = function * () {
 
 exports.byProjects = function * () {
   let projectIds = this.checkQuery('project_ids').notEmpty().value
-
   if (this.errors) {
     this.body = this.util.refail(null, 10001, this.errors)
     return
@@ -131,8 +132,8 @@ exports.create = function * () {
   const mode = this.checkBody('mode').notEmpty().value
   const projectId = this.checkBody('project_id').notEmpty().value
   const description = this.checkBody('description').notEmpty().value
-  const url = this.checkBody('url').notEmpty()
-    .match(/^\/.*$/i, 'URL 必须以 / 开头').value
+  const classify = this.checkBody('classify').value
+  const url = this.checkBody('url').notEmpty().match(/^\/.*$/i, 'URL 必须以 / 开头').value
   const method = this.checkBody('method').notEmpty().toLow().in([
     'get', 'post', 'put', 'delete', 'patch'
   ]).value
@@ -166,12 +167,18 @@ exports.create = function * () {
   yield mockProxy.newAndSave({
     project: projectId,
     description,
+    classify,
     method,
     url,
     mode
   })
+  const newMock = yield mockProxy.findOne({
+    project: projectId,
+    url,
+    method
+  })
 
-  this.body = this.util.resuccess()
+  this.body = this.util.resuccess(newMock)
 }
 
 exports.update = function * () {
@@ -179,6 +186,7 @@ exports.update = function * () {
   const id = this.checkBody('id').notEmpty().value
   const mode = this.checkBody('mode').value
   const description = this.checkBody('description').value
+  const classify = this.checkBody('classify').value
   const url = this.checkBody('url').empty()
     .match(/^\/.*$/i, 'URL 必须以 / 开头').value
   const method = this.checkBody('method').empty().toLow().in([
@@ -212,6 +220,7 @@ exports.update = function * () {
   mock.mode = mode || mock.mode
   mock.method = method || mock.method
   mock.description = description || mock.description
+  mock.classify = classify || mock.classify
 
   // 更新属性后查重
   const existMock = yield mockProxy.findOne({

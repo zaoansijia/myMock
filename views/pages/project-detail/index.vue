@@ -132,7 +132,7 @@ export default {
       columns: [
         {
           type: 'expand',
-          width: 50,
+          width: 30,
           render: (h, params) => {
             return h(MockExpand, {
               props: {
@@ -169,7 +169,8 @@ export default {
             </tag>
           }
         },
-        { title: 'URL', width: 420, ellipsis: true, sortable: true, key: 'url' },
+        { title: 'URL', width: 400, ellipsis: true, sortable: true, key: 'url' },
+        { title: this.$t('p.detail.columns[3]'), sortable: false, key: 'classify' },
         { title: this.$t('p.detail.columns[0]'), ellipsis: true, key: 'description' },
         {
           title: this.$t('p.detail.columns[1]'),
@@ -217,7 +218,7 @@ export default {
       const reg = this.keywords && new RegExp(this.keywords, 'i')
       return reg
         ? list.filter(item => (
-          reg.test(item.name) || reg.test(item.url) || reg.test(item.method)
+          reg.test(item.name) || reg.test(item.url) || reg.test(item.method) || reg.test(item.classify)
         ))
         : list
     },
@@ -323,6 +324,7 @@ export default {
       }).then(res => {
         if (res.data.success) {
           this.$Message.success(this.$t('p.detail.create.success'))
+          this.openEditor(res.data.data)
         }
       })
     },

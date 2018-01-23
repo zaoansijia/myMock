@@ -11,11 +11,12 @@ const m = require('../models')
 
 const ServerUrlModel = m.ServerUrl
 
-exports.newAndSave = function (name, url) {
+exports.newAndSave = function (name, url, team) {
   const serverUrl = new ServerUrlModel()
 
   serverUrl.name = name
   serverUrl.url = url
+  serverUrl.team = team
 
   return serverUrl.save()
 }
@@ -40,8 +41,9 @@ exports.updateById = function (serverUrl) {
     _id: serverUrl.id
   }, {
     $set: {
+      name: serverUrl.name,
       url: serverUrl.url,
-      name: serverUrl.name
+      team: serverUrl.team
     }
   })
 }

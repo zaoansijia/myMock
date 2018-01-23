@@ -11,7 +11,7 @@
           <i-button type="success" long @click.stop="login" v-else key="login">{{$tc('p.login.form.button', 2)}}</i-button>
         </transition>
         <transition name="fadeLeft">
-          <div v-show="isLogin" v-click-outside="onClickOutside">
+          <div v-if="isLogin" v-click-outside="onClickOutside">
             <i-input size="large"
               :placeholder="$tc('p.login.form.placeholder', 1)"
               ref="user" v-model="userName" @on-enter="login"></i-input>
@@ -32,133 +32,7 @@
           ref="wallpaper"
           v-show="wallpaperVisible"></div>
       </transition>
-      <!-- <div class="links">
-        <router-link to="/docs" class="link">Document</router-link>
-        <a href="https://github.com/easy-mock/easy-mock-cli" target="_blank" class="link">CLI</a>
-        <a href="https://github.com/easy-mock/easy-mock" target="_blank" class="link">GitHub</a>
-        <p v-if="copyright">{{copyright}}</p>
-      </div>
-      <transition name="fade">
-        <div class="fullscreen-by" v-if="wallpaperCopyright">
-          <div v-if="wallpaperCopyright.name === 'Bing'">
-            Photo by
-            <a :href="wallpaperCopyright.link" target="_blank">
-              <strong>{{wallpaperCopyright.name}}</strong>
-            </a>
-          </div>
-          <div v-else>
-            Photo by
-            <a :href="wallpaperCopyright.link" target="_blank">
-              <strong>{{wallpaperCopyright.name}}</strong>
-            </a>
-            <strong> / </strong>
-            <a href="https://unsplash.com" target="_blank">
-              <strong>Unsplash</strong>
-            </a>
-            <a :href="wallpaperCopyright.link" target="_blank" class="avatar">
-              <img :src="wallpaperCopyright.profileImage">
-            </a>
-          </div>
-        </div>
-      </transition>
-      <div class="about-btn" @click="page = 1">{{$tc('p.login.about', 1)}}</div> -->
     </div>
-
-    <!-- <div class="em-index__section section-about" style="z-index: 5"
-      :class="{'is-old': page > 1}">
-      <em-shape-shifter v-if="page === 1"></em-shape-shifter>
-      <div class="feature-list">
-        <transition-group name="fadeDown">
-          <div
-            class="section-title"
-            key="a"
-            v-show="featureVisible">
-            Easy Mock
-          </div>
-          <div
-            class="section-description"
-            key="b"
-            v-show="featureVisible">
-            {{$tc('p.login.about', 2)}}
-          </div>
-        </transition-group>
-        <Row :gutter="100">
-          <i-col span="8">
-            <transition name="zoom">
-              <div v-show="featureVisible">
-                <div class="feature-icon">
-                  <img src="/public/images/icon-swagger.png" style="margin-left: 1px;">
-                </div>
-                <h2>{{$tc('p.login.feature[0]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[0]', 2)}}</p>
-              </div>
-            </transition>
-          </i-col>
-          <i-col span="8">
-            <transition name="zoom">
-              <div v-show="featureVisible">
-                <div class="feature-icon">
-                  <img src="/public/images/icon-mock.png" style="margin-left: 1px;">
-                </div>
-                <h2>{{$tc('p.login.feature[1]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[1]', 2)}}</p>
-              </div>
-            </transition>
-          </i-col>
-          <i-col span="8">
-            <transition name="zoom">
-              <div v-show="featureVisible">
-                <div class="feature-icon">
-                  <img src="/public/images/icon-command.png">
-                </div>
-                <h2>{{$tc('p.login.feature[2]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[2]', 2)}}</p>
-              </div>
-            </transition>
-          </i-col>
-        </Row>
-        <Row :gutter="100">
-          <i-col span="8">
-            <transition name="zoom">
-              <div v-show="featureVisible">
-                <div class="feature-icon">
-                  <Icon type="ios-book"></Icon>
-                </div>
-                <h2>{{$tc('p.login.feature[3]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[3]', 2)}}</p>
-              </div>
-            </transition>
-          </i-col>
-          <i-col span="8">
-            <transition name="zoom">
-              <div v-show="featureVisible">
-                <div class="feature-icon">
-                  <Icon type="ribbon-b"></Icon>
-                </div>
-                <h2>{{$tc('p.login.feature[4]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[4]', 2)}}</p>
-              </div>
-            </transition>
-          </i-col>
-          <i-col span="8">
-            <transition name="zoom">
-              <div v-show="featureVisible">
-                <div class="feature-icon">
-                  <Icon type="lightbulb"></Icon>
-                </div>
-                <h2>{{$tc('p.login.feature[5]', 1)}}</h2>
-                <p>{{$tc('p.login.feature[5]', 2)}}</p>
-              </div>
-            </transition>
-          </i-col>
-        </Row>
-      </div>
-    </div> -->
-
-    <!-- <div class="em-index__pagination">
-      <div class="dot" :class="{'active': page === 0}" @click="page = 0"></div>
-      <div class="dot" :class="{'active': page === 1}" @click="page = 1"></div>
-    </div> -->
   </div>
 </template>
 

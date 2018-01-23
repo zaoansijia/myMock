@@ -12,8 +12,12 @@ const Schema = mongoose.Schema
 
 const schema = new Schema({
   name: String,
-  url: String
+  url: String,
+  team: String,
+  create_at: {
+    type: Date,
+    default: Date.now
+  }
 })
-
-schema.index({ name: 1, url: 1 }, { unique: true })
+schema.index({ url: 1, create_at: -1 })
 module.exports = mongoose.model('ServerUrl', schema)

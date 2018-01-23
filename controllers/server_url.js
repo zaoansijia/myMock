@@ -14,8 +14,6 @@ const ft = require('../models/fields_table')
 const serverProxy = p.ServerUrl
 
 exports.list = function * () {
-  // const projectId = this.checkQuery('id').notEmpty().value
-
   const pageSize = this.checkQuery('page_size').empty().toInt().gt(0)
     .default(config.get('pageSize')).value
 
@@ -35,16 +33,16 @@ exports.list = function * () {
     sort: '-create_at'
   }
 
-  const where = {
-    // project: projectId
-  }
+  const where = {}
 
   if (keywords) {
     const keyExp = new RegExp(keywords)
     where.$or = [{
+      name: keyExp
+    }, {
       url: keyExp
     }, {
-      name: keyExp
+      team: keyExp
     }]
   }
 
@@ -57,6 +55,7 @@ exports.update = function * () {
   const id = this.checkBody('id').notEmpty().value
   const name = this.checkBody('name').notEmpty().value
   const url = this.checkBody('url').notEmpty().value
+  const team = this.checkBody('team').notEmpty().value
 
   if (this.errors) {
     this.body = this.util.refail(null, 10001, this.errors)
@@ -72,32 +71,32 @@ exports.update = function * () {
   }
 
   // 更新属性
-  sUrl.url = url || sUrl.url
   sUrl.name = name || sUrl.name
+  sUrl.url = url || sUrl.url
+  sUrl.team = team || sUrl.team
 
   // 更新属性后查重
   const existQuery = {
     _id: { $ne: id },
     $or: [{
+      name: sUrl.name
+    }, {
       url: sUrl.url
     }, {
-      name: sUrl.name
+      team: team
     }]
   }
   // 查重
   const existURL = yield serverProxy.findOne(existQuery)
 
-  // const existURL = yield serverProxy.findOne({
-  //   name: name
-  // })
-  // console.log(existURL,'url')
   if (existURL) {
-    if (existURL.name === name) {
-      this.body = this.util.refail('更新失败，已有该服务器名')
-    } else {
+    if (existURL.name === name && existURL.team === team) {
+      this.body = this.util.refail('更新失败，该团队已有此服务器名')
+      return
+    } else if (existURL.url === url) {
       this.body = this.util.refail('更新失败，已有该服务器地址')
+      return
     }
-    return
   }
 
   yield serverProxy.updateById(sUrl)
@@ -108,6 +107,7 @@ exports.update = function * () {
 exports.add = function * () {
   const name = this.checkBody('name').notEmpty().len(1, 20).value
   const url = this.checkBody('url').notEmpty().len(6, 40).value
+  const team = this.checkBody('team').notEmpty().len(1, 40).value
 
   if (this.errors) {
     this.body = this.util.refail(null, 10001, this.errors)
@@ -116,24 +116,29 @@ exports.add = function * () {
   // 更新属性后查重
   const existQuery = {
     $or: [{
+      name: name
+    }, {
       url: url
     }, {
-      name: name
+      team: team
     }]
   }
   let user = yield serverProxy.findOne(existQuery)
   if (user) {
-    if (user.name === name) {
-      this.body = this.util.refail('新增失败，已有该服务器名')
-    } else {
-      this.body = this.util.refail('新增失败，已有该服务器地址')
+    if (user.team === team && user.name === name) {
+      this.body = this.util.refail('新增失败，该团队已有此服务器名')
+      return
     }
-    return
+    if (user.url === url) {
+      this.body = this.util.refail('新增失败，已有该服务器地址')
+      return
+    }
   }
 
   yield serverProxy.newAndSave(
     name,
-    url
+    url,
+    team
   )
   this.body = this.util.resuccess()
 }

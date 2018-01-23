@@ -19,7 +19,7 @@ export default {
     }
   },
   actions: {
-    FETCH ({commit, state, rootState}, route) {
+    FETCH ({commit, state}) {
       return api.serverUrl.getList({
         params: {
           page_size: 2000, // 不考虑接口分页
@@ -35,16 +35,17 @@ export default {
         }
       })
     },
-    CREATE ({commit, dispatch}, {route, mode, description, url, method}) {
+    CREATE ({commit, dispatch}, {name, url, team}) {
       return api.serverUrl.createUrl({
         data: {
           name,
-          url
+          url,
+          team
         }
       }).then((res) => {
         if (res.data.success) {
           commit('SET_REQUEST_PARAMS', {pageIndex: 1})
-          dispatch('FETCH', route)
+          dispatch('FETCH')
         }
         return res
       })

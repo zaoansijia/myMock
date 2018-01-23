@@ -21,6 +21,12 @@
       <div class="em-container-form" v-if="pageName === $t('p.server.nav[1]')" key="a">
         <div class="em-server-content">
           <Form :model="form" ref="formValidate">
+              <Form-item :label="$tc('p.server.form.team[0]', 1)"  class="em-new__form-hr">
+                <i-input size="large"
+                  :placeholder="$tc('p.server.form.team[1]', 1)"
+                  ref="name" v-model="form.team" ></i-input>
+                  <p class='desc'>{{$t('p.server.form.team[2]')}}</p>
+              </Form-item>
               <Form-item :label="$tc('p.server.form.name[0]', 1)"  class="em-new__form-hr">
                 <i-input size="large"
                   :placeholder="$tc('p.server.form.name[1]', 1)"
@@ -39,7 +45,7 @@
         </div>
       </div>
       <div class="em-container-url" v-if="pageName === $t('p.server.nav[0]')" key="b">
-          <i-input v-model="keywords" placeholder="Search URL / Name" class='search'></i-input>
+          <i-input v-model="keywords" placeholder="Search URL / Name / Team" class='search'></i-input>
           <Table
             border
             :columns="columns"
@@ -72,11 +78,13 @@ export default {
       ],
       form: {
         name: '',
-        url: ''
+        url: '',
+        team: ''
       },
       keywords: '',
       columns: [
-        { title: this.$t('p.server.column[0]'), width: 420, ellipsis: true, sortable: false, key: 'name' },
+        { title: this.$t('p.server.column[3]'), width: 220, ellipsis: true, sortable: false, key: 'team' },
+        { title: this.$t('p.server.column[0]'), width: 220, ellipsis: true, sortable: false, key: 'name' },
         { title: this.$t('p.server.column[1]'), width: 420, ellipsis: true, sortable: false, key: 'url' },
         {
           title: this.$t('p.server.column[2]'),
@@ -106,6 +114,7 @@ export default {
       if (name === this.$t('p.server.nav[0]')) {
         this.form.name = ''
         this.form.url = ''
+        this.form.team = ''
         this.type = 'add'
       }
     }
@@ -121,7 +130,7 @@ export default {
       const reg = this.keywords && new RegExp(this.keywords, 'i')
       return reg
         ? list.filter(item => (
-          reg.test(item.name) || reg.test(item.url)
+          reg.test(item.name) || reg.test(item.url) || reg.test(item.team)
         ))
         : list
     }
@@ -131,13 +140,14 @@ export default {
       api.serverUrl.add({
         data: {
           name: this.form.name,
-          url: this.form.url
+          url: this.form.url,
+          team: this.form.team
         }
       }).then((res) => {
         if (res.data.success) {
           this.$Message.success(this.$t('p.server.add.success'))
           this.$store.commit('serverurl/INIT_REQUEST')
-          this.$store.dispatch('serverurl/FETCH', this.$route)
+          this.$store.dispatch('serverurl/FETCH')
         }
       })
     },
@@ -148,7 +158,7 @@ export default {
         if (res.data.success) {
           this.$Message.success(this.$t('p.server.edit.success'))
           this.$store.commit('serverurl/INIT_REQUEST')
-          this.$store.dispatch('serverurl/FETCH', this.$route)
+          this.$store.dispatch('serverurl/FETCH')
         }
       })
     },
@@ -156,6 +166,7 @@ export default {
       this.type = 'edit'
       this.form.name = row.name
       this.form.url = row.url
+      this.form.team = row.team
       this.form.id = row._id
       this.pageName = this.$t('p.server.nav[1]')
     },

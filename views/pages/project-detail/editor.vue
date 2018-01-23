@@ -20,12 +20,15 @@
                   <span slot="prepend">/</span>
                 </i-input>
               </Form-item>
+              <Form-item :label="$t('p.detail.columns[3]')">
+                <i-input v-model="temp.classify"></i-input>
+              </Form-item>
               <Form-item :label="$t('p.detail.columns[0]')">
                 <i-input v-model="temp.description"></i-input>
               </Form-item>
               <Form-item :label="$t('p.detail.columns[2]')">
                 <ul v-if="temp.parameters!==''">
-                  <li v-for="(item,i) in temp.parameters" :key="i"><span class="param">{{item.name}}</span> : @{{item.type}}—{{item.required?$t('p.detail.editor.require[0]'):$t('p.detail.editor.require[0]')}}—{{item.description}}</li>
+                  <li v-for="(item,i) in temp.parameters" :key="i"><span class="param">{{item.name}}</span> ： @{{item.type}} - {{item.required?$t('p.detail.editor.require[0]'):$t('p.detail.editor.require[0]')}} - {{item.description}}</li>
                 </ul>
               </Form-item>
               <Form-item :label="$t('p.detail.editor.autoClose')" v-if="isEdit">
@@ -52,7 +55,6 @@
 </template>
 
 <script>
-import * as api from '../../api'
 import jsBeautify from 'js-beautify/js/lib/beautify'
 let ace
 
@@ -86,10 +88,7 @@ export default {
         method: '',
         description: '',
         parameters: '',
-        ceshi: [
-          {name: 'hello'},
-          {name: 'kkk'}
-        ]
+        classify: ''
       }
     }
   },
@@ -120,7 +119,8 @@ export default {
           this.temp.mode = this.value.mode
           this.temp.method = this.value.method
           this.temp.description = this.value.description
-          this.temp.parameters = JSON.parse(this.value.parameters)
+          this.temp.parameters = this.value.parameters ? JSON.parse(this.value.parameters) : ''
+          this.temp.classify = this.value.classify || ''
           this.codeEditor.setValue(this.temp.mode)
         } else {
           this.temp.url = ''
@@ -128,6 +128,7 @@ export default {
           this.temp.method = 'get'
           this.temp.description = ''
           this.temp.parameters = ''
+          this.temp.classify = ''
           this.codeEditor.setValue(this.temp.mode)
         }
         this.format()
@@ -174,21 +175,14 @@ export default {
       }
 
       if (this.isEdit) {
-        api.mock.update({
-          data: {
-            ...this.temp,
-            id: this.value._id,
-            url: mockUrl
-          }
+        this.$store.dispatch('mock/UPDATE', {
+          route: this.$route,
+          ...this.temp,
+          id: this.value._id,
+          url: mockUrl
         }).then((res) => {
           if (res.data.success) {
             this.$Message.success(this.$t('p.detail.editor.submit.updateSuccess'))
-            this.value.url = mockUrl
-            this.value.mode = this.temp.mode
-            this.value.method = this.temp.method
-            this.value.description = this.temp.description
-            this.value.parameters = this.temp.parameters
-            // if (this.autoClose) this.close()
           }
         })
       } else {

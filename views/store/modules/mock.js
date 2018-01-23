@@ -38,12 +38,32 @@ export default {
         }
       })
     },
-    CREATE ({commit, dispatch}, {route, mode, description, url, method}) {
+    CREATE ({commit, dispatch}, {route, mode, classify, description, url, method}) {
       return api.mock.create({
         data: {
           mode,
           url,
           method,
+          classify,
+          description,
+          project_id: route.params.id
+        }
+      }).then((res) => {
+        if (res.data.success) {
+          commit('SET_REQUEST_PARAMS', {pageIndex: 1})
+          dispatch('FETCH', route)
+        }
+        return res
+      })
+    },
+    UPDATE ({commit, dispatch}, {route, mode, id, classify, description, url, method}) {
+      return api.mock.update({
+        data: {
+          mode,
+          id,
+          url,
+          method,
+          classify,
           description,
           project_id: route.params.id
         }

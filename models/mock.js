@@ -10,6 +10,7 @@ const schema = new Schema({
     ref: 'Project'
   },
   description: String,
+  classify: String,
   mode: String,
   url: String,
   method: String,
