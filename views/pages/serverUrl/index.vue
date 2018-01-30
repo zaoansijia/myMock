@@ -24,7 +24,7 @@
               <Form-item :label="$tc('p.server.form.team[0]', 1)"  class="em-new__form-hr">
                 <i-input size="large"
                   :placeholder="$tc('p.server.form.team[1]', 1)"
-                  ref="name" v-model="form.team" ></i-input>
+                  ref="team" v-model="form.team" ></i-input>
                   <p class='desc'>{{$t('p.server.form.team[2]')}}</p>
               </Form-item>
               <Form-item :label="$tc('p.server.form.name[0]', 1)"  class="em-new__form-hr">
@@ -36,7 +36,7 @@
               <Form-item :label="$tc('p.server.form.url[0]', 1)"  class="em-new__form-hr">
                 <i-input size="large"
                   :placeholder="$tc('p.server.form.url[1]', 1)"
-                  v-model="form.url" ></i-input>
+                  ref="url" v-model="form.url" ></i-input>
                 <p class='desc'>{{$t('p.server.form.url[2]')}}</p>
               </Form-item>
               <Button type="primary" long @click="add" v-if="type==='add'"> {{$t('p.server.add.btnTxt')}} </Button>
