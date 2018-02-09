@@ -59,7 +59,8 @@ export default {
         },
         { title: this.$t('p.detail.expand.columnsRequest[0]'), key: 'name' },
         { title: this.$t('p.detail.expand.columnsRequest[1]'), key: 'description' },
-        { title: this.$t('p.detail.expand.columnsRequest[2]'), key: 'paramType' },
+        // { title: this.$t('p.detail.expand.columnsRequest[2]'), key: 'paramType' },
+        { title: this.$t('p.detail.expand.columnsRequest[4]'), key: 'required' },
         { title: this.$t('p.detail.expand.columnsRequest[3]'), key: 'dataType' }
       ],
       columnsResponse: [
@@ -81,6 +82,7 @@ export default {
         description: parameter.description || this.$t('p.detail.expand.defaultDescription'),
         paramType: parameter.in,
         dataType: this.getParamDataType(parameter),
+        required: parameter.required === 'Y' ? '必须' : '非必须',
         parameter: parameter
       }))
     },
