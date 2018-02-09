@@ -38,7 +38,7 @@ export default {
         }
       })
     },
-    CREATE ({commit, dispatch}, {route, mode, classify, description, url, method}) {
+    CREATE ({commit, dispatch}, {route, mode, classify, description, url, method, parameters}) {
       return api.mock.create({
         data: {
           mode,
@@ -46,6 +46,7 @@ export default {
           method,
           classify,
           description,
+          parameters: (parameters && JSON.stringify(parameters)) || '',
           project_id: route.params.id
         }
       }).then((res) => {
@@ -56,7 +57,7 @@ export default {
         return res
       })
     },
-    UPDATE ({commit, dispatch}, {route, mode, id, classify, description, url, method}) {
+    UPDATE ({commit, dispatch}, {route, mode, id, classify, description, url, method, parameters}) {
       return api.mock.update({
         data: {
           mode,
@@ -65,6 +66,7 @@ export default {
           method,
           classify,
           description,
+          parameters: (parameters && JSON.stringify(parameters)) || '',
           project_id: route.params.id
         }
       }).then((res) => {

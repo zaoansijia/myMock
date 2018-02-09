@@ -27,9 +27,16 @@
                 <i-input v-model="temp.description"></i-input>
               </Form-item>
               <Form-item :label="$t('p.detail.columns[2]')">
-                <ul v-if="temp.parameters!==''">
-                  <li v-for="(item,i) in temp.parameters" :key="i"><span class="param">{{item.name}}</span> ： @{{item.type}} - {{item.required?$t('p.detail.editor.require[0]'):$t('p.detail.editor.require[0]')}} - {{item.description}}</li>
-                </ul>
+                <div class="ivu-row" justify="end">
+                  <div class="ivu-col ivu-col-span-24">
+                    <Button type="text" @click="addParam" class="add-param">{{$t('p.detail.editor.action[2]')}}</Button>
+                  </div>
+                </div>
+                <div class="ivu-row" justify="end">
+                  <div class="ivu-col ivu-col-span-24">
+                    <Table :columns="columns" :data="temp.parameters" class="params-table"></Table>
+                  </div>
+                </div>
               </Form-item>
               <Form-item :label="$t('p.detail.editor.autoClose')" v-if="isEdit">
                 <i-switch v-model="autoClose"></i-switch>
@@ -87,9 +94,100 @@ export default {
         mode: '',
         method: '',
         description: '',
-        parameters: '',
+        parameters: [],
         classify: ''
-      }
+      },
+      columns: [
+        {
+          title: this.$t('p.detail.expand.columnsRequest[0]'),
+          key: 'name',
+          render: (h, params) => {
+            return h('Input', {
+              props: {
+                type: 'text',
+                value: params.row.name
+              },
+              on: {
+                'on-change': (e) => {
+                  this.paramChange(params.index, { name: e.target.value })
+                },
+                'on-input-change': (e) => {
+                  this.paramChange(params.index, { name: e.target.value })
+                }
+              }
+            })
+          }
+        },
+        {
+          title: this.$t('p.detail.expand.columnsRequest[2]'),
+          key: 'type',
+          render: (h, params) => {
+            return h('Input', {
+              props: {
+                type: 'text',
+                value: params.row.type
+              },
+              on: {
+                'on-change': (e) => {
+                  this.paramChange(params.index, { type: e.target.value })
+                },
+                'on-input-change': (e) => {
+                  this.paramChange(params.index, { type: e.target.value })
+                }
+              }
+            })
+          }
+        },
+        {
+          title: this.$t('p.detail.expand.columnsRequest[4]'),
+          key: 'required',
+          render: (h, params) => {
+            return h('Select', {
+              props: {
+                value: params.row.required || 'N'
+              },
+              on: {
+                'on-change': (value) => {
+                  this.paramChange(params.index, { required: value })
+                }
+              }
+            }, [
+              h('Option', {
+                props: {
+                  value: 'Y',
+                  label: '必须'
+                }
+              }),
+              h('Option', {
+                props: {
+                  value: 'N',
+                  label: '非必须'
+                }
+              })
+            ])
+          }
+        },
+        {
+          title: this.$t('p.detail.expand.columnsRequest[1]'),
+          key: 'description',
+          render: (h, params) => {
+            return h('Input', {
+              props: {
+                type: 'text',
+                value: params.row.description
+              },
+              on: {
+                'on-change': (e) => {
+                  this.paramChange(params.index, { description: e.target.value })
+                },
+                'on-input-change': (e) => {
+                  this.paramChange(params.index, { description: e.target.value })
+                }
+              }
+            })
+          }
+        }
+      ]
     }
   },
   computed: {
@@ -119,7 +217,7 @@ export default {
           this.temp.mode = this.value.mode
           this.temp.method = this.value.method
           this.temp.description = this.value.description
-          this.temp.parameters = this.value.parameters ? JSON.parse(this.value.parameters) : ''
+          this.temp.parameters = this.value.parameters ? JSON.parse(this.value.parameters) : []
           this.temp.classify = this.value.classify || ''
           this.codeEditor.setValue(this.temp.mode)
         } else {
@@ -127,7 +225,7 @@ export default {
           this.temp.mode = '{"data": {}}'
           this.temp.method = 'get'
           this.temp.description = ''
-          this.temp.parameters = ''
+          this.temp.parameters = []
           this.temp.classify = ''
           this.codeEditor.setValue(this.temp.mode)
         }
@@ -155,6 +253,13 @@ export default {
     close () {
       this.value.show = false
       this.$emit('input', this.value)
+    },
+    addParam () {
+      let obj = {}
+      this.temp.parameters.push(obj)
+    },
+    paramChange (index, param) {
+      this.temp.parameters[index] = { ...this.temp.parameters[index], ...param }
     },
     submit () {
       const mockUrl = this.convertUrl(this.temp.url)

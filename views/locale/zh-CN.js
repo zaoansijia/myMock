@@ -184,13 +184,13 @@ export default {
       expand: {
         description: '描述',
         tab: ['请求参数', '响应参数'],
-        columnsRequest: ['参数名', '描述', '参数类型', '数据类型'],
+        columnsRequest: ['参数名', '描述', '参数类型', '数据类型', '必须'],
         columnsResponse: ['状态码', '描述'],
         defaultDescription: '太懒了，居然不写描述'
       },
       editor: {
         title: ['更新接口', '创建接口'],
-        action: ['更新', '创建'],
+        action: ['更新', '创建', '增加参数'],
         autoClose: '自动关闭',
         control: ['格式化', '预览', '关闭'],
         require: ['必填项', '非必填'],

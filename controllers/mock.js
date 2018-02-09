@@ -137,6 +137,7 @@ exports.create = function * () {
   const method = this.checkBody('method').notEmpty().toLow().in([
     'get', 'post', 'put', 'delete', 'patch'
   ]).value
+  const parameters = this.checkBody('parameters').value
 
   if (this.errors) {
     this.body = this.util.refail(null, 10001, this.errors)
@@ -170,7 +171,8 @@ exports.create = function * () {
     classify,
     method,
     url,
-    mode
+    mode,
+    parameters
   })
   const newMock = yield mockProxy.findOne({
     project: projectId,
@@ -192,6 +194,7 @@ exports.update = function * () {
   const method = this.checkBody('method').empty().toLow().in([
     'get', 'post', 'put', 'delete', 'patch'
   ]).value
+  const parameters = this.checkBody('parameters').value
 
   if (this.errors) {
     this.body = this.util.refail(null, 10001, this.errors)
@@ -221,6 +224,7 @@ exports.update = function * () {
   mock.method = method || mock.method
   mock.description = description || mock.description
   mock.classify = classify || mock.classify
+  mock.parameters = parameters || mock.parameters
 
   // 更新属性后查重
   const existMock = yield mockProxy.findOne({
