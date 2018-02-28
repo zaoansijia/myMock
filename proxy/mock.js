@@ -30,6 +30,7 @@ exports.updateById = function (mock) {
       url: mock.url,
       mode: mock.mode,
       method: mock.method,
+      classify: mock.classify,
       parameters: mock.parameters,
       description: mock.description,
       response_model: mock.response_model

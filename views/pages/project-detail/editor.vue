@@ -144,7 +144,7 @@ export default {
           render: (h, params) => {
             return h('Select', {
               props: {
-                value: params.row.required || 'N'
+                value: (params.row.required && params.row.required !== 'N') ? 'Y' : 'N'
               },
               on: {
                 'on-change': (value) => {
@@ -256,6 +256,9 @@ export default {
     },
     addParam () {
       let obj = {}
+      if (typeof this.temp.parameters !== 'object') {
+        this.temp.parameters = JSON.parse(this.temp.parameters)
+      }
       this.temp.parameters.push(obj)
     },
     paramChange (index, param) {

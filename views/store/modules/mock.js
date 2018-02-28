@@ -46,7 +46,7 @@ export default {
           method,
           classify,
           description,
-          parameters: (parameters && JSON.stringify(parameters)) || '',
+          parameters: parameters || '',
           project_id: route.params.id
         }
       }).then((res) => {
