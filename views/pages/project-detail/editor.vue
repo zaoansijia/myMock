@@ -34,7 +34,7 @@
                 </div>
                 <div class="ivu-row" justify="end">
                   <div class="ivu-col ivu-col-span-24">
-                    <Table :columns="columns" :data="temp.parameters" class="params-table"></Table>
+                    <params-manage :initdata="temp.parameters" @update="updateParam" @delete="deleteParam" />
                   </div>
                 </div>
               </Form-item>
@@ -63,6 +63,7 @@
 
 <script>
 import jsBeautify from 'js-beautify/js/lib/beautify'
+import ParamsManage from './params-manage'
 let ace
 
 if (typeof window !== 'undefined') {
@@ -96,98 +97,7 @@ export default {
         description: '',
         parameters: [],
         classify: ''
-      },
-      columns: [
-        {
-          title: this.$t('p.detail.expand.columnsRequest[0]'),
-          key: 'name',
-          render: (h, params) => {
-            return h('Input', {
-              props: {
-                type: 'text',
-                value: params.row.name
-              },
-              on: {
-                'on-change': (e) => {
-                  this.paramChange(params.index, { name: e.target.value })
-                },
-                'on-input-change': (e) => {
-                  this.paramChange(params.index, { name: e.target.value })
-                }
-              }
-            })
-          }
-        },
-        {
-          title: this.$t('p.detail.expand.columnsRequest[2]'),
-          key: 'type',
-          render: (h, params) => {
-            return h('Input', {
-              props: {
-                type: 'text',
-                value: params.row.type
-              },
-              on: {
-                'on-change': (e) => {
-                  this.paramChange(params.index, { type: e.target.value })
-                },
-                'on-input-change': (e) => {
-                  this.paramChange(params.index, { type: e.target.value })
-                }
-              }
-            })
-          }
-        },
-        {
-          title: this.$t('p.detail.expand.columnsRequest[4]'),
-          key: 'required',
-          render: (h, params) => {
-            return h('Select', {
-              props: {
-                value: (params.row.required && params.row.required !== 'N') ? 'Y' : 'N'
-              },
-              on: {
-                'on-change': (value) => {
-                  this.paramChange(params.index, { required: value })
-                }
-              }
-            }, [
-              h('Option', {
-                props: {
-                  value: 'Y',
-                  label: '必须'
-                }
-              }),
-              h('Option', {
-                props: {
-                  value: 'N',
-                  label: '非必须'
-                }
-              })
-            ])
-          }
-        },
-        {
-          title: this.$t('p.detail.expand.columnsRequest[1]'),
-          key: 'description',
-          render: (h, params) => {
-            return h('Input', {
-              props: {
-                type: 'text',
-                value: params.row.description
-              },
-              on: {
-                'on-change': (e) => {
-                  this.paramChange(params.index, { description: e.target.value })
-                },
-                'on-input-change': (e) => {
-                  this.paramChange(params.index, { description: e.target.value })
-                }
-              }
-            })
-          }
-        }
-      ]
+      }
     }
   },
   computed: {
@@ -255,14 +165,17 @@ export default {
       this.$emit('input', this.value)
     },
     addParam () {
-      let obj = {}
+      let obj = {type: 'string', required: 'N'}
       if (typeof this.temp.parameters !== 'object') {
         this.temp.parameters = JSON.parse(this.temp.parameters)
       }
       this.temp.parameters.push(obj)
     },
-    paramChange (index, param) {
+    updateParam (index, param) {
       this.temp.parameters[index] = { ...this.temp.parameters[index], ...param }
+    },
+    deleteParam (index) {
+      this.temp.parameters.splice(index, 1)
     },
     submit () {
       const mockUrl = this.convertUrl(this.temp.url)
@@ -286,6 +199,7 @@ export default {
         this.$store.dispatch('mock/UPDATE', {
           route: this.$route,
           ...this.temp,
+          parameters: JSON.stringify(this.temp.parameters) || '',
           id: this.value._id,
           url: mockUrl
         }).then((res) => {
@@ -297,6 +211,7 @@ export default {
         this.$store.dispatch('mock/CREATE', {
           route: this.$route,
           ...this.temp,
+          parameters: JSON.stringify(this.temp.parameters) || '',
           url: mockUrl
         }).then((res) => {
           if (res.data.success) {
@@ -309,6 +224,9 @@ export default {
     preview () {
       window.open(this.$parent.baseUrl + this.value.url + '#!method=' + this.value.method)
     }
+  },
+  components: {
+    ParamsManage
   }
 }
 </script>
