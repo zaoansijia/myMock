@@ -82,7 +82,7 @@ export default {
         description: parameter.description || this.$t('p.detail.expand.defaultDescription'),
         paramType: parameter.in,
         dataType: this.getParamDataType(parameter),
-        required: parameter.required === 'Y' ? '必须' : '非必须',
+        required: parameter.required === true ? '必须' : '非必须',
         parameter: parameter
       }))
     },
