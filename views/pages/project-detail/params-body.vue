@@ -14,6 +14,18 @@ export default {
   data () {
     return {
       originData: [],
+      paramsType: [
+        { label: 'string', value: 'string' },
+        { label: 'number', value: 'number' },
+        { label: 'integer', value: 'integer' },
+        { label: 'boolean', value: 'boolean' },
+        { label: 'array', value: 'array' },
+        { label: 'object', value: 'object' }
+      ],
+      requiredType: [
+        { label: '必须', value: 'true' },
+        { label: '非必须', value: 'false' }
+      ],
       columns: [
         {
           key: 'name',
@@ -112,9 +124,9 @@ export default {
       const originData = this.originData
       if (originData instanceof Array) {
         originData.splice(index, 1)
-      } else if (originData.type === 'object' || originData.properties) {
+      } else if (originData.type === 'object') {
         delete originData.properties[key]
-      } else if (originData.type === 'array' || originData.items.properties) {
+      } else if (originData.type === 'array') {
         delete originData.items.properties[key]
       }
       this.$emit('update', originData)
@@ -184,33 +196,35 @@ export default {
     },
     // oldVal: 旧值, propKey: schema中的properties的key
     paramChange (index, key, value, { oldVal, propKey }) {
+      const originData = this.originData
       let newVal = value
       if (key === 'required') {
         newVal = value === 'true'
       }
-      if (this.originData instanceof Array) {
+      if (originData instanceof Array) {
+        const prefixKey = originData[index]
         if (key === 'type') {
           if (newVal === 'object') {
-            this.originData[index].schema = { type: newVal }
-            delete this.originData[index].type
+            prefixKey.schema = { type: newVal }
+            delete prefixKey.type
           } else if (newVal === 'array') {
-            this.originData[index].schema = { type: newVal, items: { type: 'string' } }
-            delete this.originData[index].type
+            prefixKey.schema = { type: newVal, items: { type: 'string' } }
+            delete prefixKey.type
           } else {
-            this.originData[index][key] = newVal
-            delete this.originData[index].schema
-            delete this.originData[index].items
+            prefixKey[key] = newVal
+            delete prefixKey.schema
+            delete prefixKey.items
           }
         } else if (key === 'arrType') { // 说明是数组里的type
-          this.originData[index].type === 'array' && (this.originData[index].items.type = newVal)
-          this.originData[index].schema && (this.originData[index].schema.type === 'array') && (this.originData[index].schema.items = {type: newVal})
+          prefixKey.type === 'array' && (prefixKey.items.type = newVal)
+          prefixKey.schema && (prefixKey.schema.type === 'array') && (prefixKey.schema.items = {type: newVal})
         } else {
-          this.originData[index][key] = newVal
+          prefixKey[key] = newVal
         }
-      } else if (this.originData.properties || this.originData.items) {
-        let prefixKey = this.originData
-        if (this.originData.items) {
-          prefixKey = this.originData.items
+      } else if (originData.properties || originData.items) {
+        let prefixKey = originData
+        if (originData.items) {
+          prefixKey = originData.items
         }
         if (key === 'name') {
           prefixKey.properties[newVal] = { ...prefixKey.properties[oldVal] }
@@ -226,9 +240,13 @@ export default {
             prefixKey.required.splice(idx, 1)
           }
         } else if (key === 'type' && newVal === 'array') {
-          prefixKey.properties[propKey][key] = newVal
           delete prefixKey.properties[propKey].schema
+          prefixKey.properties[propKey][key] = newVal
           prefixKey.properties[propKey].items = { type: 'string' }
+        } else if (key === 'type' && newVal === 'object') {
+          delete prefixKey.properties[propKey].items
+          delete prefixKey.properties[propKey].type
+          prefixKey.properties[propKey].schema = {type: newVal, properties: {}}
         } else if (key === 'arrType') { // 说明是数组里的type
           prefixKey.properties[propKey].type === 'array' && (prefixKey.properties[propKey].items = { type: newVal })
           if (prefixKey.properties[propKey].schema && (prefixKey.properties[propKey].schema.type === 'array')) {
@@ -238,7 +256,7 @@ export default {
           prefixKey.properties[propKey][key] = newVal
         }
       }
-      this.$emit('update', this.originData)
+      this.$emit('update', originData)
     },
     renderName (h, params) {
       return h('Input', {
@@ -276,14 +294,12 @@ export default {
           size='small'
           value={inType}
           onChange={(value) => this.paramChange(params.index, 'type', value, { propKey: params.row.name })}
-          onInput={(value) => this.paramChange(params.index, 'type', value, { propKey: params.row.name })}
-        >
-          <i-option key='string' label='string' value='string' />
-          <i-option key='number' label='number' value='number' />
-          <i-option key='integer' label='integer' value='integer' />
-          <i-option key='boolean' label='boolean' value='boolean' />
-          <i-option key='array' label='array' value='array' />
-          <i-option key='object' label='object' value='object' />
+          onInput={(value) => this.paramChange(params.index, 'type', value, { propKey: params.row.name })} >
+          {
+            this.paramsType.map((t) => {
+              return <i-option key={t.value} label={t.label} value={t.value} />
+            })
+          }
         </i-select>
         {
           inType === 'array'
@@ -292,12 +308,11 @@ export default {
               value={arrType}
               onChange={(value) => this.paramChange(params.index, 'arrType', value, { propKey: params.row.name })}
               onInput={(value) => this.paramChange(params.index, 'arrType', value, { propKey: params.row.name })}>
-              <i-option key='string' label='string' value='string' />
-              <i-option key='number' label='number' value='number' />
-              <i-option key='integer' label='integer' value='integer' />
-              <i-option key='boolean' label='boolean' value='boolean' />
-              <i-option key='array' label='array' value='array' />
-              <i-option key='object' label='object' value='object' />
+              {
+                this.paramsType.map((t) => {
+                  return <i-option key={t.value} label={t.label} value={t.value} />
+                })
+              }
             </i-select>
             : null
         }
@@ -314,10 +329,12 @@ export default {
             params.row.required ? 'true' : 'false'
           }
           onChange={(value) => this.paramChange(params.index, 'required', value, { propKey: params.row.name })}
-          onInput={(value) => this.paramChange(params.index, 'required', value, { propKey: params.row.name })}
-        >
-          <i-option key='yes' label='必须' value='true' />
-          <i-option key='no' label='非必须' value='false' />
+          onInput={(value) => this.paramChange(params.index, 'required', value, { propKey: params.row.name })}>
+          {
+            this.requiredType.map((t) => {
+              return <i-option key={t.value} label={t.label} value={t.value} />
+            })
+          }
         </i-select>
       </div>
     },

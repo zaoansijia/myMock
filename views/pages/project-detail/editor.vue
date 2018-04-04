@@ -185,8 +185,6 @@ export default {
       this.temp.parameters.push(obj)
     },
     updateParam (newParams) {
-      console.log('##### updateParam 新', JSON.parse(JSON.stringify(newParams)))
-      console.log('##### updateParam 新', JSON.stringify(newParams))
       this.temp.parameters = newParams
     },
     submit () {
