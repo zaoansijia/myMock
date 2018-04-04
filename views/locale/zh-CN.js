@@ -184,7 +184,7 @@ export default {
       expand: {
         description: '描述',
         tab: ['请求参数', '响应参数'],
-        columnsRequest: ['参数名', '描述', '参数类型', '数据类型', '必须', '操作'],
+        columnsRequest: ['参数名', '描述', '参数类型', '数据类型', '是否必须', '操作'],
         columnsResponse: ['状态码', '描述'],
         defaultDescription: '太懒了，居然不写描述'
       },

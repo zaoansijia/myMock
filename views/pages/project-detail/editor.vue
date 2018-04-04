@@ -26,16 +26,19 @@
               <Form-item :label="$t('p.detail.columns[0]')">
                 <i-input v-model="temp.description"></i-input>
               </Form-item>
+              <Form-item v-if="temp.method.toLowerCase() === 'post'" label="请求参数的Content-type">
+                <i-select v-model="temp.reqContentType">
+                  <Option v-for="item in contentTypes" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </i-select>
+              </Form-item>
               <Form-item :label="$t('p.detail.columns[2]')">
                 <div class="ivu-row" justify="end">
                   <div class="ivu-col ivu-col-span-24">
                     <Button type="text" @click="addParam" class="add-param">{{$t('p.detail.editor.action[2]')}}</Button>
                   </div>
                 </div>
-                <div class="ivu-row" justify="end">
-                  <div class="ivu-col ivu-col-span-24">
-                    <params-manage :initdata="temp.parameters" @update="updateParam" @delete="deleteParam" />
-                  </div>
+                <div class="ivu-row" style="">
+                  <params-body :initParams="temp.parameters" @update="updateParam" />
                 </div>
               </Form-item>
               <Form-item :label="$t('p.detail.editor.autoClose')" v-if="isEdit">
@@ -62,8 +65,9 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import jsBeautify from 'js-beautify/js/lib/beautify'
-import ParamsManage from './params-manage'
+import ParamsBody from './params-body.vue'
 let ace
 
 if (typeof window !== 'undefined') {
@@ -74,6 +78,8 @@ if (typeof window !== 'undefined') {
   require('brace/ext/searchbox')
   require('./snippets')
 }
+
+Vue.component('ParamsBody', ParamsBody)
 
 export default {
   props: {
@@ -90,13 +96,18 @@ export default {
         { label: 'delete', value: 'delete' },
         { label: 'patch', value: 'patch' }
       ],
+      contentTypes: [
+        { label: 'application/json', value: 'body' },
+        { label: 'application/x-www-form-urlencoded', value: 'formData' }
+      ],
       temp: {
         url: '',
         mode: '',
         method: '',
         description: '',
         parameters: [],
-        classify: ''
+        classify: '',
+        reqContentType: 'formData'
       }
     }
   },
@@ -129,6 +140,7 @@ export default {
           this.temp.description = this.value.description
           this.temp.parameters = this.value.parameters ? JSON.parse(this.value.parameters) : []
           this.temp.classify = this.value.classify || ''
+          this.temp.reqContentType = (this.temp.parameters[0] && this.temp.parameters[0].in) || 'formData'
           this.codeEditor.setValue(this.temp.mode)
         } else {
           this.temp.url = ''
@@ -137,6 +149,7 @@ export default {
           this.temp.description = ''
           this.temp.parameters = []
           this.temp.classify = ''
+          this.temp.reqContentType = 'formData'
           this.codeEditor.setValue(this.temp.mode)
         }
         this.format()
@@ -165,17 +178,16 @@ export default {
       this.$emit('input', this.value)
     },
     addParam () {
-      let obj = {type: 'string', required: 'N'}
+      let obj = { name: `参数${Math.random().toString(36).substring(4)}`, type: 'string', required: false }
       if (typeof this.temp.parameters !== 'object') {
         this.temp.parameters = JSON.parse(this.temp.parameters)
       }
       this.temp.parameters.push(obj)
     },
-    updateParam (index, param) {
-      this.temp.parameters[index] = { ...this.temp.parameters[index], ...param }
-    },
-    deleteParam (index) {
-      this.temp.parameters.splice(index, 1)
+    updateParam (newParams) {
+      console.log('##### updateParam 新', JSON.parse(JSON.stringify(newParams)))
+      console.log('##### updateParam 新', JSON.stringify(newParams))
+      this.temp.parameters = newParams
     },
     submit () {
       const mockUrl = this.convertUrl(this.temp.url)
@@ -226,7 +238,7 @@ export default {
     }
   },
   components: {
-    ParamsManage
+    ParamsBody
   }
 }
 </script>
