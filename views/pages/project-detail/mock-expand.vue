@@ -58,10 +58,11 @@ export default {
           render: (h, params) => h(DataTypeExpand, { props: { data: params.row.parameter } })
         },
         { title: this.$t('p.detail.expand.columnsRequest[0]'), key: 'name' },
-        { title: this.$t('p.detail.expand.columnsRequest[1]'), key: 'description' },
+        { title: this.$t('p.detail.expand.columnsRequest[6]'), key: 'parentKey' },
+        { title: this.$t('p.detail.expand.columnsRequest[3]'), key: 'dataType' },
         // { title: this.$t('p.detail.expand.columnsRequest[2]'), key: 'paramType' },
         { title: this.$t('p.detail.expand.columnsRequest[4]'), key: 'required' },
-        { title: this.$t('p.detail.expand.columnsRequest[3]'), key: 'dataType' }
+        { title: this.$t('p.detail.expand.columnsRequest[1]'), key: 'description' }
       ],
       columnsResponse: [
         {
@@ -77,14 +78,45 @@ export default {
   computed: {
     request () {
       const parameters = this.mock.parameters ? JSON.parse(this.mock.parameters) : []
-      return parameters.map(parameter => ({
-        name: parameter.name,
-        description: parameter.description || this.$t('p.detail.expand.defaultDescription'),
-        paramType: parameter.in,
-        dataType: this.getParamDataType(parameter),
-        required: parameter.required === true ? '必须' : '非必须',
-        parameter: parameter
-      }))
+      const resultData = []
+      parameters.map((param) => {
+        resultData.push({
+          name: param.name,
+          parentKey: 'data',
+          // description: param.description || this.$t('p.detail.expand.defaultDescription'),
+          description: param.description || '-',
+          // paramType: param.in,
+          dataType: this.getParamDataType(param),
+          required: param.required === true ? '必须' : '非必须',
+          parameter: param
+        })
+        // 判断是否有子级，第一个参数是parentKey
+        const recursionChild = (parentKey, param) => {
+          if (param.schema && Object.keys(param.schema).length > 0) {
+            let { properties, required } = param.schema
+            const { type, items } = param.schema
+
+            if (type === 'array') {
+              properties = items.properties
+              required = items.required
+            }
+            for (const key in properties) {
+              resultData.push({
+                name: key,
+                parentKey: parentKey,
+                description: properties[key].description || '-',
+                // paramType: parameter.in,
+                dataType: this.getParamDataType(properties[key]),
+                required: required && required.length > 0 && required.indexOf(key) > -1 ? '必须' : '非必须',
+                parameter: { ...param.schema }
+              })
+              recursionChild(key, properties[key])
+            }
+          }
+        }
+        recursionChild(param.name, param)
+      })
+      return resultData
     },
     response () {
       const responseModel = this.mock.response_model ? JSON.parse(this.mock.response_model) : {}
@@ -115,7 +147,8 @@ export default {
       const { type, schema } = parameter
       if (type) return type
       if (schema && schema.type) {
-        return schema.type === 'array' ? schema.items.type : schema.type
+        // return schema.type === 'array' ? schema.items.type : schema.type
+        return schema.type
       }
     }
   }

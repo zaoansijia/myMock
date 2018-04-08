@@ -119,15 +119,22 @@ export default {
     }
   },
   methods: {
-    // 删除参数
+    // 删除参数，要考虑required的值
     deleteParam (index, key) {
       const originData = this.originData
       if (originData instanceof Array) {
         originData.splice(index, 1)
-      } else if (originData.type === 'object') {
-        delete originData.properties[key]
-      } else if (originData.type === 'array') {
-        delete originData.items.properties[key]
+      } else if (originData.type === 'object' || originData.type === 'array') {
+        let { properties, required, items } = originData
+        if (originData.type === 'array') {
+          properties = items.properties
+          required = items.required
+        }
+        delete properties[key]
+        const idx = required.indexOf(key)
+        if (idx > -1) {
+          required.splice(idx, 1)
+        }
       }
       this.$emit('update', originData)
     },
@@ -153,7 +160,7 @@ export default {
     // 加子级
     // type = array && arrType = object/array可以加子级
     addChild (index, key) {
-      const name = `参数${Math.random().toString(36).substring(4)}`
+      const name = `param_${Math.random().toString(36).substring(4)}`
       const type = 'string'
 
       const originData = this.originData
@@ -229,6 +236,12 @@ export default {
         if (key === 'name') {
           prefixKey.properties[newVal] = { ...prefixKey.properties[oldVal] }
           delete prefixKey.properties[oldVal]
+          // 如果旧key在required中，从required中移除旧key，加入新key
+          const { required = [] } = prefixKey
+          const idx = required.indexOf(oldVal)
+          if (idx > -1) {
+            required.splice(idx, 1, newVal)
+          }
         } else if (key === 'required') {
           prefixKey.required = prefixKey.required || []
           const required = prefixKey.required
