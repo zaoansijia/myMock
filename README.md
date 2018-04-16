@@ -16,9 +16,9 @@
 * 提交前请保证代码不会出现`eslint`报错
 * 项目结构和命令请查看[文档](http://gitlab.gome.inc/yangliu/easy-mock)
 
-### 配置文件
+### 配置数据库文件
 
-找到 **config/default.json**，或者创建一个 **config/local.json** 文件，将如下需要替换的字段换成自己的配置即可。
+找到 **config/default.json**，或者创建一个 **config/local.json** 文件，将如下需要替换的字段换成自己的配置。
 
 ```js
 {
@@ -34,8 +34,8 @@
   }
 }
 ```
-### 正确配置 APIPrefix
+### 配置 APIPrefix 
 
-当在服务器上部署时，我们应该将 `APIPrefix` 配置成服务器的地址。
+当在服务器上部署时，我们应该将 `APIPrefix` 配置成服务器的地址。文件地址在view/config.json
 
 例如服务地址为 http://example.com 时，`APIPrefix` 应配置为 http://example.com/api。
