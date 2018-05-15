@@ -190,6 +190,13 @@ export default {
     submit () {
       const mockUrl = this.convertUrl(this.temp.url)
 
+      // this.temp.parameters[0] && this.temp.parameters[0].in
+      if (this.temp.parameters[0]) {
+        this.temp.parameters[0].in = this.temp.reqContentType
+      } else {
+        this.temp.parameters = [{in: this.temp.reqContentType}]
+      }
+
       try {
         const value = (new Function(`return ${this.temp.mode}`))() // eslint-disable-line
         if (!value) {
