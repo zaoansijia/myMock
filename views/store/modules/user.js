@@ -7,6 +7,7 @@ export default {
       state.nickName = payload.nick_name
       state.headImg = payload.head_img
       state.token = payload.token
+      state.selectedUrl = payload.selectedUrl
     }
   }
 }

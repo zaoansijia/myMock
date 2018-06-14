@@ -3,7 +3,7 @@
     <transition name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
-    <Modal v-model="visible" title="Choose Language"
+    <!-- <Modal v-model="visible" title="Choose Language"
       :closable="false" :mask-closable="false">
       <Select v-model="language">
         <Option v-for="item in languageList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -11,7 +11,7 @@
       <div slot="footer">
         <Button type="primary" @click="settingLanguage" long>OK</Button>
       </div>
-    </Modal>
+    </Modal> -->
   </div>
 </template>
 

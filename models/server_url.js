@@ -11,9 +11,12 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const schema = new Schema({
+  project: String,
+  projSaveName: String,
   name: String,
   url: String,
-  team: String,
+  transmitUrl: Object,
+  switchUrl: Boolean,
   create_at: {
     type: Date,
     default: Date.now

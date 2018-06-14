@@ -1,9 +1,10 @@
-.em-server-wrapper {
-    .em-container-form {
+@import '../../styles/base/var.css';
+@c server-url {
+    @d form {
         padding: 0 20px;
         max-width: 1020px;
         margin: auto;
-        .em-server-content {
+        @d content{
             padding: 66px 220px 100px;
             margin-top: 20px;
             width: 100%;
@@ -15,13 +16,26 @@
             button {
                 margin-top:20px;
             }
-            .em-new__form-hr {
-                border:none;
-                padding-bottom: 0;
+            .icon {
+                text-align: center;
+            }
+            .project {
+                label:before {
+                    content: '*';
+                    display: inline-block;
+                    margin-right: 4px;
+                    line-height: 1;
+                    font-family: SimSun;
+                    font-size: 12px;
+                    color: #ed3f14;
+                }
+                .ivu-form-item-error-tip {
+                    margin-top:30px;
+                }
             }
         }
     }
-    .em-container-url {
+    @d table {
         padding: 0 20px;
         max-width: 1020px;
         margin: auto;

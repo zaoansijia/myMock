@@ -11,13 +11,13 @@ const m = require('../models')
 
 const ServerUrlModel = m.ServerUrl
 
-exports.newAndSave = function (name, url, team) {
+exports.newAndSave = function (project, projSaveName, name, url, transmitUrl) {
   const serverUrl = new ServerUrlModel()
-
+  serverUrl.project = project
+  serverUrl.projSaveName = projSaveName
   serverUrl.name = name
   serverUrl.url = url
-  serverUrl.team = team
-
+  serverUrl.transmitUrl = transmitUrl
   return serverUrl.save()
 }
 
@@ -34,16 +34,19 @@ exports.find = function (query, opt) {
 }
 
 exports.delById = function (id) {
-  return ServerUrlModel.remove({_id: id})
+  return ServerUrlModel.remove({ _id: id })
 }
 exports.updateById = function (serverUrl) {
   return ServerUrlModel.update({
     _id: serverUrl.id
   }, {
     $set: {
+      project: serverUrl.project,
+      projSaveName: serverUrl.projSaveName,
       name: serverUrl.name,
       url: serverUrl.url,
-      team: serverUrl.team
+      transmitUrl: serverUrl.transmitUrl,
+      switchUrl: serverUrl.switchUrl
     }
   })
 }

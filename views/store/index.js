@@ -38,7 +38,9 @@ export function createStore () {
           name: '',
           nickName: '',
           headImg: '',
-          token: ''
+          token: '',
+          gun: '',
+          selectedUrl: {}
         },
         ...user
       },

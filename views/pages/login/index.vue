@@ -50,7 +50,7 @@ export default {
   name: 'index',
   data () {
     return {
-      isLogin: false,
+      isLogin: true,
       page: 0,
       userName: this.$ls.get('last-user'),
       password: '',

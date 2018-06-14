@@ -13,7 +13,7 @@ const ft = require('../models/fields_table')
 
 const serverProxy = p.ServerUrl
 
-exports.list = function * () {
+exports.list = function* () {
   const pageSize = this.checkQuery('page_size').empty().toInt().gt(0)
     .default(config.get('pageSize')).value
 
@@ -30,7 +30,7 @@ exports.list = function * () {
   const opt = {
     skip: (pageIndex - 1) * pageSize,
     limit: pageSize,
-    sort: '-create_at'
+    sort: 'projSaveName'
   }
 
   const where = {}
@@ -42,7 +42,7 @@ exports.list = function * () {
     }, {
       url: keyExp
     }, {
-      team: keyExp
+      project: keyExp
     }]
   }
 
@@ -51,11 +51,14 @@ exports.list = function * () {
   this.body = this.util.resuccess(mocks)
 }
 
-exports.update = function * () {
+exports.update = function* () {
   const id = this.checkBody('id').notEmpty().value
+  const project = this.checkBody('project').notEmpty().value
+  const projSaveName = this.checkBody('projSaveName').notEmpty().value
   const name = this.checkBody('name').notEmpty().value
   const url = this.checkBody('url').notEmpty().value
-  const team = this.checkBody('team').notEmpty().value
+  const transmitUrl = this.checkBody('transmitUrl').value
+  // const switchUrl = this.checkBody('switchUrl').notEmpty().value
 
   if (this.errors) {
     this.body = this.util.refail(null, 10001, this.errors)
@@ -71,10 +74,12 @@ exports.update = function * () {
   }
 
   // 更新属性
+  sUrl.project = project || sUrl.project
+  sUrl.projSaveName = projSaveName || sUrl.projSaveName
   sUrl.name = name || sUrl.name
   sUrl.url = url || sUrl.url
-  sUrl.team = team || sUrl.team
-
+  sUrl.transmitUrl = transmitUrl || sUrl.transmitUrl
+  // sUrl.switchUrl = switchUrl
   // 更新属性后查重
   const existQuery = {
     _id: { $ne: id },
@@ -83,14 +88,25 @@ exports.update = function * () {
     }, {
       url: sUrl.url
     }, {
-      team: team
+      projSaveName: projSaveName
+    }, {
+      project: project
     }]
   }
   // 查重
   const existURL = yield serverProxy.findOne(existQuery)
 
   if (existURL) {
-    if (existURL.name === name && existURL.team === team) {
+    debugger
+    if (existURL.project === project && existURL.projSaveName !== projSaveName) {
+      this.body = this.util.refail('更新失败，该项目保存名为' + existURL.projSaveName)
+      return
+    }
+    if (existURL.project !== project && existURL.projSaveName === projSaveName) {
+      this.body = this.util.refail('更新失败，该项目显示名为' + existURL.project)
+      return
+    }
+    if (existURL.name === name && existURL.project === project) {
       this.body = this.util.refail('更新失败，该团队已有此服务器名')
       return
     } else if (existURL.url === url) {
@@ -104,11 +120,12 @@ exports.update = function * () {
   this.body = this.util.resuccess()
 }
 
-exports.add = function * () {
-  const name = this.checkBody('name').notEmpty().len(1, 20).value
-  const url = this.checkBody('url').notEmpty().len(6, 40).value
-  const team = this.checkBody('team').notEmpty().len(1, 40).value
-
+exports.add = function* () {
+  const project = this.checkBody('project').notEmpty().value
+  const projSaveName = this.checkBody('projSaveName').notEmpty().value
+  const name = this.checkBody('name').notEmpty().value
+  const url = this.checkBody('url').notEmpty().value
+  const transmitUrl = this.checkBody('transmitUrl').notEmpty().value
   if (this.errors) {
     this.body = this.util.refail(null, 10001, this.errors)
     return
@@ -116,17 +133,27 @@ exports.add = function * () {
   // 更新属性后查重
   const existQuery = {
     $or: [{
+      project: project
+    }, {
+      projSaveName: projSaveName
+    }, {
       name: name
     }, {
       url: url
-    }, {
-      team: team
     }]
   }
   let user = yield serverProxy.findOne(existQuery)
   if (user) {
-    if (user.team === team && user.name === name) {
-      this.body = this.util.refail('新增失败，该团队已有此服务器名')
+    if (user.project === project && user.projSaveName !== projSaveName) {
+      this.body = this.util.refail('新增失败，该项目保存名为' + user.projSaveName)
+      return
+    }
+    if (user.project !== project && user.projSaveName === projSaveName) {
+      this.body = this.util.refail('新增失败，该项目显示名为' + user.project)
+      return
+    }
+    if (user.project === project && user.name === name) {
+      this.body = this.util.refail('新增失败，该项目已有此服务器名')
       return
     }
     if (user.url === url) {
@@ -136,13 +163,15 @@ exports.add = function * () {
   }
 
   yield serverProxy.newAndSave(
+    project,
+    projSaveName,
     name,
     url,
-    team
+    transmitUrl
   )
   this.body = this.util.resuccess()
 }
-exports.delete = function * () {
+exports.delete = function* () {
   const id = this.checkBody('id').notEmpty().value
 
   if (this.errors) {

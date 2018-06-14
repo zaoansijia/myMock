@@ -35,12 +35,12 @@ export default {
         }
       })
     },
-    CREATE ({commit, dispatch}, {name, url, team}) {
+    CREATE ({commit, dispatch}, {name, url, project}) {
       return api.serverUrl.createUrl({
         data: {
           name,
           url,
-          team
+          project
         }
       }).then((res) => {
         if (res.data.success) {

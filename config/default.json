@@ -5,7 +5,7 @@
     "mock": "/mock",
     "api": "/api"
   },
-  "db": "mongodb://10.112.76.34:27017/test",
+  "db": "mongodb://10.122.1.110:27017/yangliu",
   "unsplashClientId": "",
   "gravatar": [
     "//img.souche.com/20161230/png/58f22ad636a0f33bad8762688f78d425.png",
@@ -77,6 +77,6 @@
     "timeout": 25000,
     "publicPath": "/dist/",
     "mockPrefix": "/mock/",
-    "APIPrefix": "http://10.112.76.47:7300/api"
+    "APIPrefix": "http://10.122.1.110:7300/api"
   }
 }
