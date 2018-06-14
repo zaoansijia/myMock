@@ -264,7 +264,7 @@ export default {
       this.form.name = row.name
       this.form.url = row.url
       this.form.transmitUrl = row.transmitUrl
-      const projectSeleted = this.$store.state.user.selectedUrl[row.projSaveName]
+      const projectSeleted = this.$store.state.user.selectedUrl && this.$store.state.user.selectedUrl[row.projSaveName]
       this.form.switchUrl = projectSeleted && projectSeleted.hasSelected && this.form.url === projectSeleted.serverurl
       this.pageName = this.$t('p.server.nav[1]')
     },
