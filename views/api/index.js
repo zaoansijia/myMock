@@ -1,7 +1,7 @@
-import axios from 'axios'
-import iView from 'iview'
-import conf from 'config'
-import cookie from 'react-cookie'
+const axios = require('axios')
+const iView = require('iview')
+const conf = require('config')
+const cookie = require('react-cookie')
 
 let router
 const isClient = process.env.VUE_ENV === 'client'
@@ -177,7 +177,7 @@ const realtime = {
   getProjectTop: config => createAPI('/realtime/top/project', 'get', config)
 }
 
-export {
+module.exports = {
   u,
   project,
   mock,

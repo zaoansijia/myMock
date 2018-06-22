@@ -223,7 +223,7 @@ export default {
         projSaveName: ['项目保存名', '请输入项目保存名', 'eg：PMS / 小虫后台 / 内购会'],
         name: ['服务器名字', '请输入服务器名字', '格式请输入平台环境，eg：杨柳本地 / 小虫测试环境 / 刘小波本地'],
         url: ['服务器地址', '请输入服务器地址', '格式本地环境+端口号，eg：http://10.122.1.110:3300'],
-        transmitUrl: ['转发地址', '请输入转发的地址', '转发格式如示例：eg: /login, /range/pager, /pagerSize_face'],
+        transmitUrl: ['转发地址', '请输入转发的地址', '转发格式如示例：eg: /login,/range/pager,/pagerSize_face'],
         select: ['作为选中环境']
       },
       formErr: {

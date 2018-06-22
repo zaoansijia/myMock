@@ -223,14 +223,14 @@ export default {
     operate (type) {
       let operateFun = {}
       let text = ''
-
+      const user = this.$store.state.user
       this.$refs['form'].validate((valid) => {
         if (valid) {
           switch (type) {
             case 'add': operateFun = api.serverUrl.add({data: this.form}); text = this.$t('p.server.add.success'); break
             default: operateFun = api.serverUrl.update({data: this.form}); text = this.$t('p.server.edit.success'); break
           }
-          Promise.all([operateFun, this.updateUser(type)]).then(res => {
+          Promise.all([operateFun, this.updateUser(type,user)]).then(res => {
             if (res[0].data.success) {
               this.$Message.success(text)
               this.$store.commit('serverurl/INIT_REQUEST')
@@ -240,8 +240,7 @@ export default {
         }
       })
     },
-    updateUser (type) {
-      let data = this.$store.state.user
+    updateUser (type,data) {
       const projectSeleted = data.selectedUrl[this.form.projSaveName]
       if (this.form.switchUrl) {
         data.selectedUrl[this.form.projSaveName] = {
@@ -275,9 +274,10 @@ export default {
         onOk: () => {
           api.serverUrl.delete({data: { id: row._id }}).then(res => {
             if (res.data.success) {
-              if (row.switchUrl) {
+              const projSelected = this.$store.state.user.selectedUrl && this.$store.state.user.selectedUrl[row.projSaveName]
+              if (projSelected && row.url === projSelected.serverurl) {
                 let data = this.$store.state.user
-                data.selectedUrl[row.projSaveName] = {}
+                data.selectedUrl[row.projSaveName] = undefined
                 api.u.update({ data }).then(res => {
                   this.$ls.set('user', data)
                 })

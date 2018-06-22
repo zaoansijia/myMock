@@ -80,18 +80,18 @@
             </li>
             <li
               class="ivu-menu-item"
-              @click="open('http://doc.gome.inc/login.action')">
-              <Icon type="link"></Icon> {{$t('c.layout.menu[4][4]')}}
-            </li>
-            <li
-              class="ivu-menu-item"
-              @click="open('http://itpm.gome.inc/secure/Dashboard.jspa')">
+              @click="open('http://jira.intra.gomeplus.com/secure/Dashboard.jspa')">
               <Icon type="link"></Icon> {{$t('c.layout.menu[4][5]')}}
             </li>
             <li
               class="ivu-menu-item"
               @click="open('http://gitlab.gome.inc/yangliu/easy-mock')">
               <Icon type="link"></Icon> {{$t('c.layout.menu[4][6]')}}
+            </li>
+            <li
+              class="ivu-menu-item"
+              @click="open('http://doc.gome.inc/login.action')">
+              <Icon type="link"></Icon> {{$t('c.layout.menu[4][4]')}}
             </li>
           </Submenu>
           <Submenu name="5" class="nav-avatar" v-show="userHeadImg">

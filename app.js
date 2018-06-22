@@ -1,5 +1,4 @@
 'use strict'
-
 const _ = require('lodash')
 const koa = require('koa')
 const path = require('path')
@@ -35,10 +34,9 @@ validate(app)
 
 const requestLogger = isProd
   ? koaBunyanLogger.requestLogger()
-  : function * (next) {
+  : function* (next) {
     yield next
   }
-
 app.proxy = config.get('proxy')
 app
   .use(favicon(path.join(__dirname, '/public/images/icon.png')))
@@ -83,3 +81,67 @@ app
 if (!module.parent) {
   app.listen(config.get('port'))
 }
+
+// 导入WebSocket模块:
+const WebSocket = require('ws')
+
+// 引用Server类:
+const WebSocketServer = WebSocket.Server
+
+// 实例化:
+const wss = new WebSocketServer({ port: 22300 })
+
+// 定义数据库相关
+const MongoClient = require('mongodb').MongoClient
+const mngUrl = 'mongodb://10.122.1.110:27017/'
+
+let urls = {}
+wss.on('connection', (ws) => {
+  let timer
+  ws.on('message', (message) => {
+    console.log(`[SERVER] Received: ${message}`)
+    const msg = JSON.parse(message)
+    const key = msg.name + msg.projectSaveName
+    if (urls[key] || urls[key] === '') { urls[key] = undefined }
+    queryData(key, msg, ws)
+    timer = setInterval(() => { queryData(key, msg, ws) }, 5000)
+  })
+  ws.on('close', function () {
+    console.log('stopping client ws')
+    clearInterval(timer)
+  })
+})
+const queryData = (key, msg, ws) => {
+  if (Object.keys(urls).length > 200) { urls = {} }
+  MongoClient.connect(mngUrl, (err, db) => {
+    if (err) throw err
+    const dbo = db.db('yangliu')
+    dbo.collection('users').find({ 'name': msg.name }).toArray((err, result) => {
+      if (err) throw err
+      let preUrl = urls[key]
+      if (result.length > 0) {
+        const resUrl = (result[0].selectedUrl && result[0].selectedUrl[msg.projectSaveName]) || ''
+        sendData(preUrl, resUrl, key, ws)
+      } else {
+        ws.send(JSON.stringify({ err: 'Not find the user' }),() => {
+          ws.terminate()
+        })
+      }
+    })
+  })
+}
+const sendData = (preUrl, resUrl, key, ws) => {
+  if (!preUrl && preUrl !== '') {
+    !resUrl ? urls[key] = '' : urls[key] = resUrl
+    ws.send(JSON.stringify(resUrl))
+  } else {
+    const notSame1 = resUrl.serverurl && preUrl.serverurl && (resUrl.serverurl !== preUrl.serverurl || resUrl.transmitUrl !== preUrl.transmitUrl)
+    const notSame2 = (preUrl.serverurl && resUrl === '') || (resUrl.serverurl && preUrl === '')
+    if (notSame1 || notSame2) {
+      urls[key] = resUrl
+      ws.send(JSON.stringify(resUrl))
+    }
+  }
+}
+
+console.log('ws server started at podrt 22300...')

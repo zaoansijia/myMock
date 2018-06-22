@@ -19,7 +19,8 @@ export function createStore () {
       app: {
         state: {
           version: version,
-          readChangelog: false
+          readChangelog: false,
+          selectedUrl: {}
         },
         ...app
       },
@@ -39,7 +40,6 @@ export function createStore () {
           nickName: '',
           headImg: '',
           token: '',
-          gun: '',
           selectedUrl: {}
         },
         ...user

@@ -94,6 +94,7 @@
     "friendly-errors-webpack-plugin": "^1.6.1",
     "highlight.js": "^9.9.0",
     "istanbul": "^0.4.5",
+    "koa-websocket": "^5.0.1",
     "markdown-it": "8.3.0",
     "markdown-it-anchor": "^2.6.0",
     "markdown-it-attrs": "^0.8.0",
@@ -121,7 +122,8 @@
     "webpack-dev-middleware": "^1.12.0",
     "webpack-hot-middleware": "^2.18.2",
     "webpack-merge": "^4.1.0",
-    "webpack-node-externals": "^1.6.0"
+    "webpack-node-externals": "^1.6.0",
+    "ws": "^1.1.1"
   },
   "optionalDependencies": {
     "fsevents": "*"

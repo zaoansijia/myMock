@@ -7,7 +7,6 @@ const p = require('../proxy')
 const util = require('../util')
 const mock = require('../util/mock')
 const ft = require('../models/fields_table')
-
 const userProxy = p.User
 
 exports.list = function* () {
@@ -68,10 +67,9 @@ exports.update = function* () {
   user.head_img = headImg || user.head_img
   user.password = password ? yield util.bhash(password) : user.password
   user.selectedUrl = selectedUrl || user.selectedUrl || {}
-
   yield userProxy.update(user)
 
-  this.body = this.util.resuccess()
+  this.body = this.util.resuccess(_.pick(user, ft.user))
 }
 
 exports.login = function* () {
@@ -100,19 +98,20 @@ exports.login = function* () {
   }
 
   user.token = token[0].jwt
-  if (projectSaveName) {
-    user.selectedUrl = (user.selectedUrl && user.selectedUrl[projectSaveName]) || {}
-  }
+  user.selectedUrl = user.selectedUrl || {}
+  // if (projectSaveName) {
+  //   user.selectedUrl = (user.selectedUrl && user.selectedUrl[projectSaveName]) || {}
+  // }
   if (!projectSaveName) {
     const password = this.checkBody('password').notEmpty().len(6, 20).value
     // 验证密码
     const verifyPassword = yield util.bcompare(password, user.password)
-
     if (!verifyPassword) {
       this.body = this.util.refail('请检查密码是否正确')
       return
     }
   }
+  console.log(user,'user')
   this.body = this.util.resuccess(_.pick(user, ft.user))
 }
 

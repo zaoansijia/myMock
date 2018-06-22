@@ -125,7 +125,7 @@ exports.add = function* () {
   const projSaveName = this.checkBody('projSaveName').notEmpty().value
   const name = this.checkBody('name').notEmpty().value
   const url = this.checkBody('url').notEmpty().value
-  const transmitUrl = this.checkBody('transmitUrl').notEmpty().value
+  const transmitUrl = this.checkBody('transmitUrl').value
   if (this.errors) {
     this.body = this.util.refail(null, 10001, this.errors)
     return
