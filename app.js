@@ -93,7 +93,7 @@ const wss = new WebSocketServer({ port: 22300 })
 
 // 定义数据库相关
 const MongoClient = require('mongodb').MongoClient
-const mngUrl = 'mongodb://10.122.1.110:27017/'
+const mngUrl = 'mongodb://10.112.76.34:27017/'
 
 let urls = {}
 wss.on('connection', (ws) => {
@@ -115,7 +115,7 @@ const queryData = (key, msg, ws) => {
   if (Object.keys(urls).length > 200) { urls = {} }
   MongoClient.connect(mngUrl, (err, db) => {
     if (err) throw err
-    const dbo = db.db('yangliu')
+    const dbo = db.db('test')
     dbo.collection('users').find({ 'name': msg.name }).toArray((err, result) => {
       if (err) throw err
       let preUrl = urls[key]
